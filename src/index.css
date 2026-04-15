@@ -1,111 +1,80 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap");
+@import "tailwindcss";
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  --bg-primary: #FAF7F2;
+  --bg-secondary: #ede8df;
+  --bg-card: #ffffff;
+  --text-primary: #2c2420;
+  --text-secondary: #8c7b6b;
+  --accent: #c084a0;
+  --accent-hover: #a86d8a;
+  --border: #e0d8cc;
+  --status-inprogress-bg: #f3e8ee;
+  --status-inprogress-text: #a86d8a;
+  --status-done-bg: #2c2420;
+  --status-done-text: #ffffff;
+  --status-queued-bg: #ede8df;
+  --status-queued-text: #8c7b6b;
+  --progress-bar: #c084a0;
+  --sidebar-width: 240px;
+  --sidebar-bg: #F5F0EA;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+[data-theme="dark"] {
+  --bg-primary: #1a2e2a;
+  --bg-secondary: #152420;
+  --bg-card: #1f3530;
+  --text-primary: #f5efe6;
+  --text-secondary: #9ab5a8;
+  --accent: #e8855a;
+  --accent-hover: #d4714a;
+  --border: #2a4040;
+  --status-inprogress-bg: #2a3d35;
+  --status-inprogress-text: #e8855a;
+  --status-done-bg: #f5efe6;
+  --status-done-text: #1a2e2a;
+  --status-queued-bg: #1f3530;
+  --status-queued-text: #9ab5a8;
+  --progress-bar: #e8855a;
+  --sidebar-bg: #243332;
 }
 
-body {
-  margin: 0;
+@theme inline {
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-card: var(--bg-card);
+  --color-sidebar: var(--sidebar-bg);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-border: var(--border);
+  --color-status-inprogress-bg: var(--status-inprogress-bg);
+  --color-status-inprogress-text: var(--status-inprogress-text);
+  --color-status-done-bg: var(--status-done-bg);
+  --color-status-done-text: var(--status-done-text);
+  --color-status-queued-bg: var(--status-queued-bg);
+  --color-status-queued-text: var(--status-queued-text);
+  --color-progress-bar: var(--progress-bar);
+  --color-sidebar-bg: var(--sidebar-bg);
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+* {
   box-sizing: border-box;
 }
 
+body {
+  font-family: "DM Sans", sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
 h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+h2,
+h3 {
+  font-family: "Playfair Display", serif;
 }
