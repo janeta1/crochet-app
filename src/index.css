@@ -19,10 +19,11 @@
   --progress-bar: #c084a0;
   --sidebar-width: 240px;
   --sidebar-bg: #F5F0EA;
+  --sidebar-accent: #E8DDD5;
 }
 
 [data-theme="dark"] {
-  --bg-primary: #1a2e2a;
+  --bg-primary: #2A3B3A;
   --bg-secondary: #152420;
   --bg-card: #1f3530;
   --text-primary: #f5efe6;
@@ -38,6 +39,7 @@
   --status-queued-text: #9ab5a8;
   --progress-bar: #e8855a;
   --sidebar-bg: #243332;
+  --sidebar-accent: #3A4948;
 }
 
 @theme inline {
@@ -58,6 +60,7 @@
   --color-status-queued-text: var(--status-queued-text);
   --color-progress-bar: var(--progress-bar);
   --color-sidebar-bg: var(--sidebar-bg);
+  --color-sidebar-accent: var(--sidebar-accent);
 }
 
 * {
