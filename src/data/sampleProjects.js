@@ -1,0 +1,64 @@
+export const sampleProjects = [
+  {
+    id: '1',
+    name: 'Granny Square Blanket',
+    status: 'in-progress',
+    hookSize: '5mm',
+    yarnWeight: 'Worsted',
+    color: '#C4A0A0',
+    isFavorite: true,
+    parts: [
+      { id: 'p1', name: 'Squares', totalRows: 100, completedRows: 65 }
+    ],
+    sessions: [],
+    timeSpent: 720,
+    createdAt: '2026-03-01'
+  },
+  {
+    id: '2',
+    name: 'Amigurumi Bear',
+    status: 'done',
+    hookSize: '3.5mm',
+    yarnWeight: 'DK',
+    color: '#9B8EBD',
+    isFavorite: false,
+    parts: [
+      { id: 'p1', name: 'Head', totalRows: 20, completedRows: 20 },
+      { id: 'p2', name: 'Body', totalRows: 30, completedRows: 30 }
+    ],
+    sessions: [],
+    timeSpent: 480,
+    createdAt: '2026-02-15'
+  },
+  {
+    id: '3',
+    name: 'Summer Tote Bag',
+    status: 'in-progress',
+    hookSize: '4mm',
+    yarnWeight: 'Cotton',
+    color: '#D4A5A5',
+    isFavorite: true,
+    parts: [
+      { id: 'p1', name: 'Body', totalRows: 40, completedRows: 12 }
+    ],
+    sessions: [],
+    timeSpent: 180,
+    createdAt: '2026-03-10'
+  },
+  {
+    id: '4',
+    name: 'Baby Booties',
+    status: 'queued',
+    hookSize: '3mm',
+    yarnWeight: 'Sport',
+    color: '#B8A898',
+    isFavorite: false,
+    parts: [
+      { id: 'p1', name: 'Bootie 1', totalRows: 20, completedRows: 0 },
+      { id: 'p2', name: 'Bootie 2', totalRows: 20, completedRows: 0 }
+    ],
+    sessions: [],
+    timeSpent: 0,
+    createdAt: '2026-03-20'
+  }
+]
