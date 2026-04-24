@@ -2,11 +2,13 @@ import { useState } from "react";
 import ProjectCard from "../components/ProjectCard";
 import { sampleProjects } from "../data/sampleProjects";
 import { Heart } from "lucide-react";
+import ProjectModal from "../components/ProjectModal";
 
 function ProjectsPage() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [activeFilter, setActiveFilter] = useState("all");
   const [projects, setProjects] = useState(sampleProjects);
+  const [showProjectModal, setShowProjectModal] = useState(false);
   // const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
   const handleProjectClick = (project) => {
@@ -31,11 +33,35 @@ function ProjectsPage() {
     );
   }
 
+  function handleAddProject(formData) {
+    const newProject = {
+      id: Date.now().toString(),
+      name: formData.name,
+      hookSize: formData.hookSize,
+      yarnWeight: formData.yarnWeight,
+      color: formData.color,
+      photo: formData.photo,
+      yarns: [],
+      parts: formData.parts,
+      status: "queued",
+      isFavorite: false,
+      sessions: [],
+      timeSpent: 0,
+      createdAt: new Date().toISOString(),
+      completedAt: null,
+    }
+    setProjects([...projects, newProject]);
+    setShowProjectModal(false);
+  }
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl">My Projects</h2>
-        <button className="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-hover">
+        <button
+          className="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-hover"
+          onClick={() => setShowProjectModal(true)}
+        >
           + New Project
         </button>
       </div>
@@ -73,6 +99,18 @@ function ProjectsPage() {
           />
         ))}
       </div>
+
+      {filteredProjects.length === 0 && (
+        <div className="flex flex-col gap-2 items-center justify-center py-15 text-text-secondary">
+          <img src="src\assets\sad_yarn.png" alt="No projects" className="w-30 h-30 mb-3" />
+          <p className="text-xl mb-2">No projects here...</p>
+          <p className="text-base">Click "+ New Project" to get started. Ready when you are!</p>
+        </div>
+      )}
+
+      {showProjectModal && (
+        <ProjectModal onClose={() => setShowProjectModal(false)} onAdd={handleAddProject} />
+      )}
     </div>
   );
 }
