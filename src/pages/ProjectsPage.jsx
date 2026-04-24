@@ -3,6 +3,7 @@ import ProjectCard from "../components/ProjectCard";
 import { sampleProjects } from "../data/sampleProjects";
 import { Heart } from "lucide-react";
 import ProjectModal from "../components/ProjectModal";
+import ProjectDetail from "../components/ProjectDetail";
 
 function ProjectsPage() {
   const [selectedProject, setSelectedProject] = useState(null);
@@ -49,7 +50,7 @@ function ProjectsPage() {
       timeSpent: 0,
       createdAt: new Date().toISOString(),
       completedAt: null,
-    }
+    };
     setProjects([...projects, newProject]);
     setShowProjectModal(false);
   }
@@ -102,15 +103,27 @@ function ProjectsPage() {
 
       {filteredProjects.length === 0 && (
         <div className="flex flex-col gap-2 items-center justify-center py-15 text-text-secondary">
-          <img src="src\assets\sad_yarn.png" alt="No projects" className="w-30 h-30 mb-3" />
+          <img
+            src="src\assets\sad_yarn.png"
+            alt="No projects"
+            className="w-30 h-30 mb-3"
+          />
           <p className="text-xl mb-2">No projects here...</p>
-          <p className="text-base">Click "+ New Project" to get started. Ready when you are!</p>
+          <p className="text-base">
+            Click "+ New Project" to get started. Ready when you are!
+          </p>
         </div>
       )}
 
       {showProjectModal && (
-        <ProjectModal onClose={() => setShowProjectModal(false)} onAdd={handleAddProject} />
+        <ProjectModal
+          onClose={() => setShowProjectModal(false)}
+          onAdd={handleAddProject}
+        />
       )}
+
+      {/* for project details */}
+      {selectedProject && <ProjectDetail project={selectedProject} />}
     </div>
   );
 }
