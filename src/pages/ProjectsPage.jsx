@@ -6,7 +6,7 @@ import ProjectModal from "../components/ProjectModal";
 import ProjectDetail from "../components/ProjectDetail";
 import SessionModal from "../components/SessionModal";
 
-function ProjectsPage() {
+function ProjectsPage({ yarns }) {
   const [selectedProject, setSelectedProject] = useState(null);
   const [activeFilter, setActiveFilter] = useState("all");
   const [projects, setProjects] = useState(sampleProjects);
@@ -140,6 +140,7 @@ function ProjectsPage() {
           <ProjectCard
             key={project.id}
             project={project}
+            yarns={yarns}
             isSelected={selectedProject?.id === project.id}
             onClick={() => handleProjectClick(project)}
             onFavoriteToggle={() => toggleFavorite(project.id)}
@@ -165,6 +166,7 @@ function ProjectsPage() {
         <ProjectModal
           onClose={() => setShowProjectModal(false)}
           onAdd={handleAddProject}
+          yarns={yarns}
         />
       )}
 
@@ -173,6 +175,7 @@ function ProjectsPage() {
           project={currentProject}
           onClose={() => setShowEditProjectModal(false)}
           onAdd={handleEditProject}
+          yarns={yarns}
         />
       )}
 
