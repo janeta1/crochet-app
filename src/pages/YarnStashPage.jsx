@@ -1,13 +1,50 @@
 import YarnCard from "../components/YarnCard";
 import { sampleYarns } from "../data/sampleYarns";
 import { useState } from "react";
+import YarnModal from "../components/YarnModal";
 
 function YarnStashPage() {
   const [yarns, setYarns] = useState(sampleYarns);
-  const weights = ['all', ...new Set(yarns.map(y => y.weight))];
-  const [activeWeight, setActiveWeight] = useState('all');
+  const weights = ["all", ...new Set(yarns.map((y) => y.weight))];
+  const [activeWeight, setActiveWeight] = useState("all");
+  const [showYarnModal, setShowYarnModal] = useState(false);
+  const [showEditYarnModal, setShowEditYarnModal] = useState(false);
+  const [selectedYarn, setSelectedYarn] = useState(null);
 
-  const filteredYarns = yarns.filter(y => activeWeight === 'all' || y.weight === activeWeight);
+  const filteredYarns = yarns.filter(
+    (y) => activeWeight === "all" || y.weight === activeWeight,
+  );
+
+  function handleDeleteYarn(yarnId) {
+    setYarns(yarns.filter((y) => y.id !== yarnId));
+  }
+
+  function handleAddYarn(formData) {
+    const newYarn = {
+      id: Date.now().toString(),
+      name: formData.name,
+      brand: formData.brand,
+      weight: formData.weight,
+      quantity: formData.quantity,
+      color: formData.color,
+      isFavorite: false,
+    };
+    setYarns([...yarns, newYarn]);
+    setShowYarnModal(false);
+  }
+
+  function handleEditYarn(yarnId, updatedData) {
+    setYarns(yarns.map(y => y.id === yarnId ? {...y, ...updatedData} : y));
+    setShowEditYarnModal(false);
+  }
+
+  function toggleFavorite(yarnId) {
+    setYarns(
+      yarns.map((y) =>
+        y.id === yarnId ? { ...y, isFavorite: !y.isFavorite } : y,
+      ),
+    );
+  }
 
   return (
     <div>
@@ -15,6 +52,7 @@ function YarnStashPage() {
         <h2 className="text-3xl">Yarn Stash</h2>
         <button
           className="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-hover"
+          onClick={() => setShowYarnModal(true)}
         >
           + New Yarn
         </button>
@@ -39,6 +77,12 @@ function YarnStashPage() {
           <YarnCard
             key={yarn.id}
             yarn={yarn}
+            onDelete={() => handleDeleteYarn(yarn.id)}
+            onFavoriteToggle={() => toggleFavorite(yarn.id)}
+            onEdit={() => {
+              setSelectedYarn(yarn);
+              setShowEditYarnModal(true);
+            }}
           />
         ))}
       </div>
@@ -56,8 +100,17 @@ function YarnStashPage() {
           </p>
         </div>
       )}
+
+      {showYarnModal && <YarnModal onClose={() => setShowYarnModal(false)} onAdd={handleAddYarn}/>}
+      {showEditYarnModal && selectedYarn && (
+        <YarnModal
+          yarn={selectedYarn}
+          onClose={() => setShowEditYarnModal(false)}
+          onAdd={(formData) => handleEditYarn(selectedYarn.id, formData)}
+        />
+      )}
     </div>
-  )
+  );
 }
 
 export default YarnStashPage;

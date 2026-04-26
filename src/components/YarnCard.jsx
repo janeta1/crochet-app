@@ -6,10 +6,11 @@ function YarnCard({ yarn, onDelete, onEdit, onFavoriteToggle }) {
       <div className="relative">
         <div className="h-36 w-full" style={{ backgroundColor: yarn.color }} />
         <div className="flex gap-2">
-          <button className="absolute top-2 right-10 bg-mist-600/80 rounded-full p-1 ">
+          <button onClick={onEdit} className="absolute top-2 right-10 bg-mist-600/80 rounded-full p-1 ">
             <Pencil size={16} className="text-white" />
           </button>
           <button
+            onClick={onDelete}
             className="absolute top-2 right-2 bg-red-600/80 rounded-full p-1"
           >
             <Trash2 size={16} className="text-white" />
@@ -21,7 +22,10 @@ function YarnCard({ yarn, onDelete, onEdit, onFavoriteToggle }) {
       <div className="p-4">
         <div className="flex justify-between mb-1 items-start">
           <p className="font-medium text-text-primary">{yarn.name}</p>
-          <button className="text-accent hover:text-accent-hover">
+          <button
+            className="text-accent hover:text-accent-hover"
+            onClick={onFavoriteToggle}
+          >
             <Heart size={20} fill={yarn.isFavorite ? "currentColor" : "none"} />
           </button>
         </div>
