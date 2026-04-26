@@ -4,12 +4,15 @@ import { sampleProjects } from "../data/sampleProjects";
 import { Heart } from "lucide-react";
 import ProjectModal from "../components/ProjectModal";
 import ProjectDetail from "../components/ProjectDetail";
+import SessionModal from "../components/SessionModal";
 
 function ProjectsPage() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [activeFilter, setActiveFilter] = useState("all");
   const [projects, setProjects] = useState(sampleProjects);
   const [showProjectModal, setShowProjectModal] = useState(false);
+  const [showSessionModal, setShowSessionModal] = useState(false);
+  const currentProject = projects.find(p => p.id === selectedProject?.id);
   // const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
   const handleProjectClick = (project) => {
@@ -53,6 +56,34 @@ function ProjectsPage() {
     };
     setProjects([...projects, newProject]);
     setShowProjectModal(false);
+  }
+
+  function handleAddSession(projectId, sessionData) {
+    setProjects(
+      projects.map((p) => {
+        if (p.id !== projectId) return p;
+
+        const newSession = {
+          id: Date.now().toString(),
+          date: sessionData.date,
+          duration: sessionData.duration,
+          note: sessionData.note,
+        };
+
+        const updatedParts = p.parts.map((part) => ({
+          ...part,
+          completedRows:
+            part.completedRows + (sessionData.partUpdates[part.id] || 0),
+        }));
+
+        return {
+          ...p,
+          sessions: [...p.sessions, newSession],
+          parts: updatedParts,
+          timeSpent: p.timeSpent + sessionData.duration,
+        };
+      }),
+    );
   }
 
   return (
@@ -122,8 +153,24 @@ function ProjectsPage() {
         />
       )}
 
+      {showSessionModal && (
+        <SessionModal
+          project={currentProject}
+          onClose={() => setShowSessionModal(false)}
+          onAdd={(formData) => {
+            handleAddSession(currentProject.id, formData);
+            setShowSessionModal(false);
+          }}
+        />
+      )}
+
       {/* for project details */}
-      {selectedProject && <ProjectDetail project={selectedProject} />}
+      {currentProject && (
+        <ProjectDetail
+          project={currentProject}
+          onAddSession={() => setShowSessionModal(true)}
+        />
+      )}
     </div>
   );
 }
