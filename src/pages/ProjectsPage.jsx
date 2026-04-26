@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProjectCard from "../components/ProjectCard";
 import { Heart } from "lucide-react";
 import ProjectModal from "../components/ProjectModal";
@@ -36,6 +36,15 @@ function ProjectsPage({
   const filteredProjects = projects.filter(
     (p) => activeFilter === "all" || p.status === activeFilter,
   );
+
+  useEffect(() => {
+    if (
+      selectedProject &&
+      !filteredProjects.find((p) => p.id === selectedProject.id)
+    ) {
+      setSelectedProject(null);
+    }
+  }, [activeFilter, projects]);
 
   return (
     <div>
