@@ -1,16 +1,59 @@
-# React + Vite
+# Stitchbook 🧶
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A cozy crochet project manager built for crafters who want to keep track of their works in progress, yarn stash, and crochet sessions.
 
-Currently, two official plugins are available:
+## Live Demo
+...
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+### Projects
+- Add, edit and delete crochet projects
+- Track progress through multi-part row counting
+- Log crochet sessions with notes, duration and row updates
+- Support for frogging (negative row updates)
+- Link yarns from your stash to projects
+- Upload a project photo or pick a color
+- Mark projects as Queued, In Progress or Done
+- Favorite projects for quick access
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Yarn Stash
+- Manage your yarn collection with brand, weight, color and quantity
+- Filter yarns by weight
+- Link yarns to projects
 
-## Expanding the ESLint configuration
+### Favorites
+- Quick access to your favorite projects with full detail view
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### General
+- Light and dark mode (preference saved across sessions)
+- Fully responsive — works on mobile and desktop
+- All data stored locally in your browser (IndexedDB)
+- No account needed, no data leaves your device
+
+## Tech Stack
+- React + Vite
+- Tailwind CSS
+- React Router
+- IndexedDB (via idb)
+- Hosted on GitHub Pages
+
+## Running Locally
+
+```bash
+git clone https://github.com/YOUR_USERNAME/crochet-app.git
+cd crochet-app
+npm install
+npm run dev
+```
+
+## Project Structure
+```
+src/
+├── components/    # Reusable UI components
+├── pages/         # Page components
+├── hooks/         # Custom React hooks (useProjects, useYarns)
+├── db/            # IndexedDB setup and queries
+├── data/          # Sample data
+└── utils/         # Utility functions
+```
