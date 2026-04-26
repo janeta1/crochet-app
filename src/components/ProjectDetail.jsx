@@ -1,7 +1,14 @@
 import { calculateProgress } from "../utils/projectUtils";
 import { Trash2, Pencil } from "lucide-react";
 
-function ProjectDetail({ project, onAddSession, onDelete, onEdit, yarns }) {
+function ProjectDetail({
+  project,
+  onAddSession,
+  onDelete,
+  onEdit,
+  onStatusChange,
+  yarns,
+}) {
   const progress = calculateProgress(project);
   const linkedYarns = (yarns || []).filter((y) =>
     project.yarns?.includes(y.id),
@@ -12,7 +19,16 @@ function ProjectDetail({ project, onAddSession, onDelete, onEdit, yarns }) {
       <div className="bg-bg-card rounded-xl p-6 border border-border">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-lg">{project.name}</h3>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
+            <select
+              value={project.status}
+              onChange={(e) => onStatusChange(e.target.value)}
+              className={`text-sm px-3 py-1 rounded-full border border-none cursor-pointer focus:outline-none font-medium ${project.status === "in-progress" ? "bg-status-inprogress-bg text-status-inprogress-text" : project.status === "done" ? "bg-status-done-bg text-status-done-text" : "bg-status-queued-bg text-status-queued-text"}`}
+            >
+              <option value="queued">Queued</option>
+              <option value="in-progress">In Progress</option>
+              <option value="done">Done</option>
+            </select>
             <button
               className="text-sm text-text-secondary hover:text-text-primary cursor-pointer"
               onClick={onEdit}
@@ -90,6 +106,19 @@ function ProjectDetail({ project, onAddSession, onDelete, onEdit, yarns }) {
           <span className="text-text-secondary">Progress</span>
           <span className="text-text-primary font-medium">{progress}%</span>
         </div>
+
+        {project.status === "done" && project.completedAt && (
+          <div className="flex justify-between py-2">
+            <span className="text-text-secondary">Completed</span>
+            <span className="text-text-primary font-medium">
+              {new Date(project.completedAt).toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* right side - session logs */}

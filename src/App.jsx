@@ -11,7 +11,7 @@ import { sampleProjects } from "./data/sampleProjects";
 
 function App() {
   const [isDark, setIsDark] = useState(false);
-  const { projects, handleAddProject, handleAddSession, handleDeleteProject, handleEditProject, toggleFavorite } = useProjects();
+  const { projects, loading: projectsLoading, handleAddProject, handleAddSession, handleDeleteProject, handleEditProject, toggleFavorite, handleStatusChange } = useProjects();
   const { yarns, loading: yarnsLoading, handleDeleteYarn, handleAddYarn, handleEditYarn, toggleFavorite: toggleYarnFavorite } = useYarns();
   
 
@@ -34,9 +34,9 @@ function App() {
           element={<Layout isDark={isDark} toggleTheme={toggleTheme} />}
         >
           <Route index element={<Navigate to="/projects" replace />} />
-          <Route path="projects" element={<ProjectsPage projects={projects} handleAddProject={handleAddProject} handleAddSession={handleAddSession} handleDeleteProject={handleDeleteProject} handleEditProject={handleEditProject} toggleFavorite={toggleFavorite} yarns={yarns} />} />
+          <Route path="projects" element={<ProjectsPage projects={projects} loading={projectsLoading} handleAddProject={handleAddProject} handleAddSession={handleAddSession} handleDeleteProject={handleDeleteProject} handleEditProject={handleEditProject} toggleFavorite={toggleFavorite} handleStatusChange={handleStatusChange} yarns={yarns} />} />
           <Route path="yarn-stash" element={<YarnStashPage yarns={yarns} loading={yarnsLoading} handleAddYarn={handleAddYarn} handleEditYarn={handleEditYarn} handleDeleteYarn={handleDeleteYarn} toggleFavorite={toggleYarnFavorite} />} />
-          <Route path="favorites" element={<FavoritesPage projects={projects} handleAddSession={handleAddSession} handleDeleteProject={handleDeleteProject} handleEditProject={handleEditProject} toggleFavorite={toggleFavorite} yarns={yarns} />} />
+          <Route path="favorites" element={<FavoritesPage projects={projects} loading={projectsLoading} handleAddSession={handleAddSession} handleDeleteProject={handleDeleteProject} handleEditProject={handleEditProject} toggleFavorite={toggleFavorite} yarns={yarns} />} />
         </Route>
       </Routes>
     </BrowserRouter>

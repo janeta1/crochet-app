@@ -93,6 +93,20 @@ export function useProjects() {
     );
   }
 
+  async function handleStatusChange(projectId, newStatus) {
+    const project = projects.find(p => p.id === projectId);
+    const updated = { ...project, status: newStatus };
+    if (newStatus === "done" && project.status !== "done") {
+      updated.completedAt = new Date().toISOString();
+    } else if (newStatus !== "done") {
+      updated.completedAt = null;
+    }
+    await saveProject(updated);
+    setProjects((prev) =>
+      prev.map((p) => (p.id === projectId ? updated : p)),
+    );
+  }
+
   return {
     projects,
     loading,
@@ -101,5 +115,6 @@ export function useProjects() {
     handleDeleteProject,
     handleEditProject,
     toggleFavorite,
+    handleStatusChange,
   };
 }
