@@ -7,6 +7,7 @@ import { HeartOff } from 'lucide-react';
 
 function FavoritesPage({
   projects,
+  loading,
   handleAddSession,
   handleDeleteProject,
   handleEditProject,
@@ -43,7 +44,7 @@ function FavoritesPage({
         ))}
       </div>
 
-      {favoriteProjects.length === 0 && (
+      {!loading && favoriteProjects.length === 0 && (
         <div className="flex flex-col items-center justify-center py-15 text-text-secondary">
           <HeartOff size={35} />
           <span className="text-xl mb-1 mt-4">No favorites yet...</span>
