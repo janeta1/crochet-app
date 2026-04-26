@@ -34,7 +34,7 @@ function App() {
           <Route index element={<Navigate to="/projects" replace />} />
           <Route path="projects" element={<ProjectsPage projects={projects} handleAddProject={handleAddProject} handleAddSession={handleAddSession} handleDeleteProject={handleDeleteProject} handleEditProject={handleEditProject} toggleFavorite={toggleFavorite} yarns={yarns} />} />
           <Route path="yarn-stash" element={<YarnStashPage yarns={yarns} setYarns={setYarns} />} />
-          <Route path="favorites" element={<FavoritesPage projects={projects} handleAddProject={handleAddProject} handleAddSession={handleAddSession} handleDeleteProject={handleDeleteProject} handleEditProject={handleEditProject} toggleFavorite={toggleFavorite} yarns={yarns} />} />
+          <Route path="favorites" element={<FavoritesPage projects={projects} handleAddSession={handleAddSession} handleDeleteProject={handleDeleteProject} handleEditProject={handleEditProject} toggleFavorite={toggleFavorite} yarns={yarns} />} />
         </Route>
       </Routes>
     </BrowserRouter>
