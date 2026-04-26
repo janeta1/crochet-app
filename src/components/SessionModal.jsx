@@ -56,9 +56,14 @@ function SessionModal({ onAdd, onClose, project }) {
 
           {project.parts.length > 0 && (
             <div>
-              <label className="text-base text-text-secondary mb-1 block">
-                Parts Updates
-              </label>
+              <div className="flex justify-between items-center mb-1">
+                <label className="text-base text-text-secondary mb-1 block">
+                  Parts Updates
+                </label>
+                <p className="text-xs text-text-secondary">
+                  *negative rows = frogged
+                </p>
+              </div>
               {project.parts.map((part) => (
                 <div
                   key={part.id}
@@ -69,7 +74,7 @@ function SessionModal({ onAdd, onClose, project }) {
                   </span>
                   <input
                     type="number"
-                    min="0"
+                    min={-part.completedRows}
                     max={part.totalRows - part.completedRows}
                     value={formData.partUpdates[part.id] || 0}
                     onChange={(e) => {
