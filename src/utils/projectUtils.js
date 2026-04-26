@@ -1,13 +1,18 @@
 export function calculateProgress(project) {
-  const totalRows = project.parts.reduce(
-    (sum, part) => sum + part.totalRows,
-    0,
-  );
-  const completedRows = project.parts.reduce(
-    (sum, part) => sum + part.completedRows,
+  if (!project.parts || project.parts.length === 0) return 0;
+
+  const totalWork = project.parts.reduce((sum, part) => {
+    const qty = parseInt(part.quantity);
+    const rows = parseInt(part.totalRows);
+    if (qty > 1) return sum + qty;
+    return sum + rows;
+  }, 0);
+
+  const completedWork = project.parts.reduce(
+    (sum, part) => sum + (parseInt(part.completedRows) || 0),
     0,
   );
 
-  if (totalRows === 0) return 0;
-  return Math.round((completedRows / totalRows) * 100);
+  if (totalWork === 0) return 0;
+  return Math.round((completedWork / totalWork) * 100);
 }

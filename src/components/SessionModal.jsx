@@ -69,13 +69,24 @@ function SessionModal({ onAdd, onClose, project }) {
                   key={part.id}
                   className="flex justify-between items-center mb-2"
                 >
-                  <span key={part.id} className="text-sm text-text-secondary">
-                    {part.name}
-                  </span>
+                  <div>
+                    <span key={part.id} className="text-sm text-text-secondary">
+                      {part.name}
+                    </span>
+                    <p className="text-xs text-text-secondary">
+                      {part.quantity > 1
+                        ? `${part.completedRows}/${part.quantity} done`
+                        : `${part.completedRows}/${part.totalRows} rows`}
+                    </p>
+                  </div>
                   <input
                     type="number"
-                    min={-part.completedRows}
-                    max={part.totalRows - part.completedRows}
+                    min={part.quantity > 1 ? 0 : -part.completedRows}
+                    max={
+                      part.quantity > 1
+                        ? part.quantity - part.completedRows
+                        : part.totalRows - part.completedRows
+                    }
                     value={formData.partUpdates[part.id] ?? 0}
                     onChange={(e) => {
                       setFormData({

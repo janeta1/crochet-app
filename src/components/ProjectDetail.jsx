@@ -10,6 +10,7 @@ function ProjectDetail({
   yarns,
 }) {
   const progress = calculateProgress(project);
+  console.log(progress);
   const linkedYarns = (yarns || []).filter((y) =>
     project.yarns?.includes(y.id),
   );
@@ -93,8 +94,10 @@ function ProjectDetail({
                     <span className="text-text-secondary text-sm">
                       {part.name} (x{part.quantity || 1})
                     </span>
-                    <span className="text-text-primary text-sm pr-2">
-                      {part.completedRows}/{part.totalRows} rows
+                    <span className="text-text-primary text-sm">
+                      {part.quantity > 1
+                        ? `${part.completedRows}/${part.quantity} pieces`
+                        : `${part.completedRows}/${part.totalRows} rows`}
                     </span>
                   </div>
                 </div>
