@@ -20,7 +20,7 @@ function ProjectModal({ onClose, onAdd, project, yarns }) {
       ...formData,
       parts: [
         ...formData.parts,
-        { id: Date.now().toString(), name: "", totalRows: 0, completedRows: 0 },
+        { id: Date.now().toString(), name: "", totalRows: 0, completedRows: 0, quantity: 1 },
       ],
     });
   }
@@ -205,6 +205,20 @@ function ProjectModal({ onClose, onAdd, project, yarns }) {
                   onChange={(e) => updatePart(part.id, "name", e.target.value)}
                   placeholder="Part name"
                   className="flex-1 px-3 py-2 rounded-lg border border-border bg-bg-primary text-text-primary text-sm focus:outline-none focus:border-accent"
+                />
+                <input
+                  type="number"
+                  placeholder="Qty"
+                  min="1"
+                  value={part.quantity || 1}
+                  onChange={(e) =>
+                    updatePart(
+                      part.id,
+                      "quantity",
+                      parseInt(e.target.value) || 1,
+                    )
+                  }
+                  className="w-30 px-3 py-2 rounded-lg border border-border bg-bg-primary text-text-primary text-sm focus:outline-none focus:border-accent"
                 />
                 <input
                   type="number"
