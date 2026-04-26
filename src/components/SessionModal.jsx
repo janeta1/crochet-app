@@ -47,7 +47,7 @@ function SessionModal({ onAdd, onClose, project }) {
               onChange={(e) =>
                 setFormData({
                   ...formData,
-                  duration: parseInt(e.target.value) || 0,
+                  duration: parseInt(e.target.value) ?? 0,
                 })
               }
               className="w-full px-3 py-2 rounded-lg border border-border bg-bg-primary text-sm focus:outline-none focus:border-accent"
@@ -76,13 +76,13 @@ function SessionModal({ onAdd, onClose, project }) {
                     type="number"
                     min={-part.completedRows}
                     max={part.totalRows - part.completedRows}
-                    value={formData.partUpdates[part.id] || 0}
+                    value={formData.partUpdates[part.id] ?? 0}
                     onChange={(e) => {
                       setFormData({
                         ...formData,
                         partUpdates: {
                           ...formData.partUpdates,
-                          [part.id]: parseInt(e.target.value) || 0,
+                          [part.id]: e.target.value === '' ? '' : parseInt(e.target.value) || 0,
                         },
                       });
                     }}

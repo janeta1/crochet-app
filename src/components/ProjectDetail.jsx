@@ -37,7 +37,7 @@ function ProjectDetail({ project, onAddSession, onDelete, onEdit }) {
           {" "}
           <span className="text-text-secondary">Time Spent</span>
           <span className="text-text-primary font-medium">
-            {Math.floor(project.timeSpent / 60)} hours
+            {Math.floor(project.timeSpent / 60)} hours {project.timeSpent % 60} mins
           </span>
         </div>
 
