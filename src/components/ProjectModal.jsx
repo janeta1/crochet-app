@@ -1,11 +1,10 @@
 import { Trash2, Plus, X } from "lucide-react";
 import { useState } from "react";
 
-function ProjectModal({ onClose, onAdd, project }) {
+function ProjectModal({ onClose, onAdd, project, yarns }) {
   const [formData, setFormData] = useState({
     name: project?.name || "",
     hookSize: project?.hookSize || "",
-    yarnWeight: project?.yarnWeight || "",
     color: project?.color || "#C4A0A0",
     photo: project?.photo || null,
     yarns: project?.yarns || [],
@@ -87,21 +86,45 @@ function ProjectModal({ onClose, onAdd, project }) {
 
           <div>
             <label className="text-base text-text-secondary mb-1 block">
-              Yarn weight
+              Yarn(s)
             </label>
-            <select
-              value={formData.yarnWeight}
-              onChange={(e) => handleInputChange("yarnWeight", e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-border bg-bg-primary text-sm focus:outline-none focus:border-accent"
-            >
-              <option value="">Select weight</option>
-              <option value="Thread">Thread</option>
-              <option value="Lace">Lace</option>
-              <option value="Sport">Sport</option>
-              <option value="DK">DK</option>
-              <option value="Worsted">Worsted</option>
-              <option value="Bulky">Bulky</option>
-            </select>
+
+            {yarns && yarns.length > 0 ? (
+              yarns.map((yarn) => (
+                <label
+                  key={yarn.id}
+                  className="flex items-center gap-2 mb-2 cursor-pointer"
+                >
+                  <input
+                    type="checkbox"
+                    checked={formData.yarns.includes(yarn.id)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        handleInputChange("yarns", [
+                          ...formData.yarns,
+                          yarn.id,
+                        ]);
+                      } else {
+                        handleInputChange(
+                          "yarns",
+                          formData.yarns.filter((id) => id !== yarn.id),
+                        );
+                      }
+                    }}
+                  />
+                  <div
+                    className="w-4 h-4 rounded-full"
+                    style={{ backgroundColor: yarn.color }}
+                  />
+                  <span className="text-sm text-text-primary">{yarn.name}</span>
+                </label>
+              ))
+            ) : (
+              <p className="text-sm text-text-secondary italic">
+                No yarns in stash. Add yarns in the Yarn Stash page to select
+                them here.
+              </p>
+            )}
           </div>
 
           <div>

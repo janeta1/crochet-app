@@ -1,8 +1,10 @@
 import { Heart } from "lucide-react";
 import { calculateProgress } from "../utils/projectUtils";
 
-function ProjectCard({ project, isSelected, onClick, onFavoriteToggle }) {
+function ProjectCard({ project, isSelected, onClick, onFavoriteToggle, yarns }) {
   const progress = calculateProgress(project);
+  const linkedYarns = (yarns || []).filter((y) => project.yarns?.includes(y.id));
+  const weights = [...new Set(linkedYarns.map((y) => y.weight))].join(", ");
 
   return (
     <div
@@ -38,7 +40,7 @@ function ProjectCard({ project, isSelected, onClick, onFavoriteToggle }) {
         </div>
 
         <p className="text-sm text-text-secondary mb-3">
-          {project.yarnWeight} • Hook {project.hookSize}
+          {weights} • Hook {project.hookSize}
         </p>
 
         {/* progress bar */}

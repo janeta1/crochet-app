@@ -1,10 +1,8 @@
 import YarnCard from "../components/YarnCard";
-import { sampleYarns } from "../data/sampleYarns";
 import { useState } from "react";
 import YarnModal from "../components/YarnModal";
 
-function YarnStashPage() {
-  const [yarns, setYarns] = useState(sampleYarns);
+function YarnStashPage({ yarns, setYarns }) {
   const weights = ["all", ...new Set(yarns.map((y) => y.weight))];
   const [activeWeight, setActiveWeight] = useState("all");
   const [showYarnModal, setShowYarnModal] = useState(false);
