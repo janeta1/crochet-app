@@ -2,7 +2,14 @@ import YarnCard from "../components/YarnCard";
 import { useState } from "react";
 import YarnModal from "../components/YarnModal";
 
-function YarnStashPage({ yarns, loading, handleAddYarn, handleEditYarn, handleDeleteYarn, toggleFavorite }) {
+function YarnStashPage({
+  yarns,
+  loading,
+  handleAddYarn,
+  handleEditYarn,
+  handleDeleteYarn,
+  toggleFavorite,
+}) {
   const weights = ["all", ...new Set(yarns.map((y) => y.weight))];
   const [activeWeight, setActiveWeight] = useState("all");
   const [showYarnModal, setShowYarnModal] = useState(false);
@@ -54,7 +61,7 @@ function YarnStashPage({ yarns, loading, handleAddYarn, handleEditYarn, handleDe
         ))}
       </div>
 
-      {!loading &&filteredYarns.length === 0 && (
+      {!loading && filteredYarns.length === 0 && (
         <div className="flex flex-col gap-2 items-center justify-center py-15 text-text-secondary">
           <img
             src="src\assets\sad_yarn.png"

@@ -1,18 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { sampleProjects } from "../data/sampleProjects";
+import { getAllProjects, saveProject, deleteProject } from "../db/database";
 
 export function useProjects() {
-  const [projects, setProjects] = useState(sampleProjects);
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  function toggleFavorite(projectId) {
+  useEffect(() => {
+    async function loadProjects() {
+      const stored = await getAllProjects();
+      setProjects(stored);
+      setLoading(false);
+    }
+    loadProjects();
+  }, []);
+
+  async function toggleFavorite(projectId) {
+    const project = projects.find(p => p.id === projectId);
+    const updated = { ...project, isFavorite: !project.isFavorite };
+    await saveProject(updated);
     setProjects((prev) =>
       prev.map((p) =>
-        p.id === projectId ? { ...p, isFavorite: !p.isFavorite } : p,
+        p.id === projectId ? { ...project, isFavorite: !project.isFavorite } : p,
       ),
     );
   }
 
-  function handleAddProject(formData) {
+  async function handleAddProject(formData) {
     const newProject = {
       id: Date.now().toString(),
       name: formData.name,
@@ -29,12 +43,13 @@ export function useProjects() {
       createdAt: new Date().toISOString(),
       completedAt: null,
     };
+    await saveProject(newProject);
     setProjects((prev) => [...prev, newProject]);
   }
 
-  function handleAddSession(projectId, sessionData) {
-    setProjects((prev) =>
-      prev.map((p) => {
+    async function handleAddSession(projectId, sessionData) {
+    setProjects((prev) => {
+      const updated = prev.map((p) => {
         if (p.id !== projectId) return p;
 
         const newSession = {
@@ -50,28 +65,37 @@ export function useProjects() {
             part.completedRows + (sessionData.partUpdates[part.id] || 0),
         }));
 
-        return {
+        const updatedProject = {
           ...p,
           sessions: [...p.sessions, newSession],
           parts: updatedParts,
-          timeSpent: p.timeSpent + sessionData.duration,
+          timeSpent: p.timeSpent + (parseInt(sessionData.duration) || 0),
         };
-      }),
-    );
+
+        saveProject(updatedProject); 
+        return updatedProject;
+      });
+      return updated;
+    });
   }
 
-  function handleDeleteProject(projectId) {
+  async function handleDeleteProject(projectId) {
+    await deleteProject(projectId);
     setProjects((prev) => prev.filter((p) => p.id !== projectId));
   }
 
-  function handleEditProject(projectId, formData) {
+  async function handleEditProject(projectId, formData) {
+    const project = projects.find(p => p.id === projectId);
+    const updated = { ...project, ...formData };
+    await saveProject(updated);
     setProjects((prev) =>
-      prev.map((p) => (p.id === projectId ? { ...p, ...formData } : p)),
+      prev.map((p) => (p.id === projectId ? updated : p)),
     );
   }
 
   return {
     projects,
+    loading,
     handleAddProject,
     handleAddSession,
     handleDeleteProject,

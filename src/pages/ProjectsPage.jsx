@@ -7,6 +7,7 @@ import SessionModal from "../components/SessionModal";
 
 function ProjectsPage({
   projects,
+  loading,
   handleAddProject,
   handleAddSession,
   handleDeleteProject,
@@ -59,14 +60,6 @@ function ProjectsPage({
             </button>
           ))}
         </div>
-
-        {/* <button
-          onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
-          className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm ${showFavoritesOnly ? "bg-accent text-white" : "bg-bg-secondary text-text-secondary hover:bg-border"}`}
-        >
-          <Heart size={16} fill={showFavoritesOnly ? "currentColor" : "none"} />
-          Favorites
-        </button> */}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -82,7 +75,7 @@ function ProjectsPage({
         ))}
       </div>
 
-      {filteredProjects.length === 0 && (
+      {!loading && filteredProjects.length === 0 && (
         <div className="flex flex-col gap-2 items-center justify-center py-15 text-text-secondary">
           <img
             src="src\assets\sad_yarn.png"
