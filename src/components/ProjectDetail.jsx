@@ -14,7 +14,7 @@ function ProjectDetail({
     project.yarns?.includes(y.id),
   );
   return (
-    <div className="grid grid-cols-2 gap-6 mt-6">
+    <div className="grid lg:grid-cols-2 grid-cols-1 gap-6 mt-6">
       {/* left side - details */}
       <div className="bg-bg-card rounded-xl p-6 border border-border">
         <div className="flex justify-between items-center mb-6">
@@ -83,23 +83,25 @@ function ProjectDetail({
           </div>
         </div>
 
-        {project.parts.length > 0 && (
-          <div className="border-b border-border py-2">
-            <p className="text-text-secondary mb-3">Parts</p>
-            {project.parts.map((part) => (
-              <div key={part.id} className="mb-3">
-                <div className="pl-3 flex justify-between mb-1">
-                  <span className="text-text-secondary text-sm">
-                    {part.name}
-                  </span>
-                  <span className="text-text-primary text-sm">
-                    {part.completedRows}/{part.totalRows} rows
-                  </span>
+        <div className="overflow-y-auto max-h-38">
+          {project.parts.length > 0 && (
+            <div className="border-b border-border py-2">
+              <p className="text-text-secondary mb-3">Parts</p>
+              {project.parts.map((part) => (
+                <div key={part.id} className="mb-3">
+                  <div className="pl-3 flex justify-between mb-1">
+                    <span className="text-text-secondary text-sm">
+                      {part.name} (x{part.quantity || 1})
+                    </span>
+                    <span className="text-text-primary text-sm pr-2">
+                      {part.completedRows}/{part.totalRows} rows
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
+        </div>
 
         <div className="flex justify-between py-2">
           {" "}
@@ -138,21 +140,23 @@ function ProjectDetail({
             No sessions yet
           </p>
         ) : (
-          project.sessions.map((session) => (
-            <div key={session.id} className="flex gap-4 mb-4">
-              <div className="w-2 h-2 rounded-full bg-accent mt-2"></div>
-              <div>
-                <p className="text-sm text-text-secondary mb-1">
-                  {new Date(session.date).toLocaleDateString("en-US", {
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
-                </p>
-                <p className="text-text-primary text-sm">{session.note}</p>
+          <div className="overflow-y-auto max-h-92">
+            {[...project.sessions].reverse().map((session) => (
+              <div key={session.id} className="flex gap-4 mb-4">
+                <div className="w-2 h-2 rounded-full bg-accent mt-2"></div>
+                <div>
+                  <p className="text-sm text-text-secondary mb-1">
+                    {new Date(session.date).toLocaleDateString("en-US", {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
+                  </p>
+                  <p className="text-text-primary text-sm">{session.note}</p>
+                </div>
               </div>
-            </div>
-          ))
+            ))}
+          </div>
         )}
       </div>
     </div>

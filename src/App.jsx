@@ -10,10 +10,38 @@ import { sampleYarns } from "./data/sampleYarns";
 import { sampleProjects } from "./data/sampleProjects";
 
 function App() {
-  const [isDark, setIsDark] = useState(false);
-  const { projects, loading: projectsLoading, handleAddProject, handleAddSession, handleDeleteProject, handleEditProject, toggleFavorite, handleStatusChange } = useProjects();
-  const { yarns, loading: yarnsLoading, handleDeleteYarn, handleAddYarn, handleEditYarn, toggleFavorite: toggleYarnFavorite } = useYarns();
-  
+  const {
+    projects,
+    loading: projectsLoading,
+    handleAddProject,
+    handleAddSession,
+    handleDeleteProject,
+    handleEditProject,
+    toggleFavorite,
+    handleStatusChange,
+  } = useProjects();
+  const {
+    yarns,
+    loading: yarnsLoading,
+    handleDeleteYarn,
+    handleAddYarn,
+    handleEditYarn,
+    toggleFavorite: toggleYarnFavorite,
+  } = useYarns();
+
+  // Load theme from localStorage on start
+  const [isDark, setIsDark] = useState(() => {
+    return localStorage.getItem("theme") === "dark";
+  });
+
+  // Save theme to localStorage whenever it changes
+  useEffect(() => {
+    document.documentElement.setAttribute(
+      "data-theme",
+      isDark ? "dark" : "light",
+    );
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+  }, [isDark]);
 
   useEffect(() => {
     document.documentElement.setAttribute(
@@ -34,9 +62,49 @@ function App() {
           element={<Layout isDark={isDark} toggleTheme={toggleTheme} />}
         >
           <Route index element={<Navigate to="/projects" replace />} />
-          <Route path="projects" element={<ProjectsPage projects={projects} loading={projectsLoading} handleAddProject={handleAddProject} handleAddSession={handleAddSession} handleDeleteProject={handleDeleteProject} handleEditProject={handleEditProject} toggleFavorite={toggleFavorite} handleStatusChange={handleStatusChange} yarns={yarns} />} />
-          <Route path="yarn-stash" element={<YarnStashPage yarns={yarns} loading={yarnsLoading} handleAddYarn={handleAddYarn} handleEditYarn={handleEditYarn} handleDeleteYarn={handleDeleteYarn} toggleFavorite={toggleYarnFavorite} />} />
-          <Route path="favorites" element={<FavoritesPage projects={projects} loading={projectsLoading} handleAddSession={handleAddSession} handleDeleteProject={handleDeleteProject} handleEditProject={handleEditProject} toggleFavorite={toggleFavorite} yarns={yarns} />} />
+          <Route
+            path="projects"
+            element={
+              <ProjectsPage
+                projects={projects}
+                loading={projectsLoading}
+                handleAddProject={handleAddProject}
+                handleAddSession={handleAddSession}
+                handleDeleteProject={handleDeleteProject}
+                handleEditProject={handleEditProject}
+                toggleFavorite={toggleFavorite}
+                handleStatusChange={handleStatusChange}
+                yarns={yarns}
+              />
+            }
+          />
+          <Route
+            path="yarn-stash"
+            element={
+              <YarnStashPage
+                yarns={yarns}
+                loading={yarnsLoading}
+                handleAddYarn={handleAddYarn}
+                handleEditYarn={handleEditYarn}
+                handleDeleteYarn={handleDeleteYarn}
+                toggleFavorite={toggleYarnFavorite}
+              />
+            }
+          />
+          <Route
+            path="favorites"
+            element={
+              <FavoritesPage
+                projects={projects}
+                loading={projectsLoading}
+                handleAddSession={handleAddSession}
+                handleDeleteProject={handleDeleteProject}
+                handleEditProject={handleEditProject}
+                toggleFavorite={toggleFavorite}
+                yarns={yarns}
+              />
+            }
+          />
         </Route>
       </Routes>
     </BrowserRouter>
