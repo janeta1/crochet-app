@@ -8,18 +8,18 @@ A cozy crochet project manager built for crafters who want to keep track of thei
 ## Features
 
 ### Projects
-- Add, edit and delete crochet projects
+- **Add**, **edit** and **delete** crochet projects
+- **Filter** projects by status (All, In Progress, Done, Queued)
 - Track progress through multi-part row counting
 - Log crochet sessions with notes, duration and row updates
 - Support for frogging (negative row updates)
 - Link yarns from your stash to projects
 - Upload a project photo or pick a color
-- Mark projects as Queued, In Progress or Done
-- Favorite projects for quick access
+- **Favorite** projects for quick access
 
 ### Yarn Stash
-- Manage your yarn collection with brand, weight, color and quantity
-- Filter yarns by weight
+- **Manage** your yarn collection with brand, weight, color and quantity
+- **Filter** yarns by weight
 - Link yarns to projects
 
 ### Favorites
@@ -41,7 +41,7 @@ A cozy crochet project manager built for crafters who want to keep track of thei
 ## Running Locally
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/crochet-app.git
+git clone https://github.com/janeta1/crochet-app.git
 cd crochet-app
 npm install
 npm run dev
