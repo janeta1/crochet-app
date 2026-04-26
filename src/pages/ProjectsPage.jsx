@@ -14,6 +14,7 @@ function ProjectsPage({
   handleEditProject,
   toggleFavorite,
   yarns,
+  handleStatusChange,
 }) {
   const [selectedProject, setSelectedProject] = useState(null);
   const [activeFilter, setActiveFilter] = useState("all");
@@ -134,6 +135,9 @@ function ProjectsPage({
           }}
           onEdit={() => setShowEditProjectModal(true)}
           yarns={yarns}
+          onStatusChange={(status) =>
+            handleStatusChange(currentProject.id, status)
+          }
         />
       )}
     </div>
