@@ -1,15 +1,21 @@
 import { useState } from "react";
 import ProjectCard from "../components/ProjectCard";
-import { sampleProjects } from "../data/sampleProjects";
 import { Heart } from "lucide-react";
 import ProjectModal from "../components/ProjectModal";
 import ProjectDetail from "../components/ProjectDetail";
 import SessionModal from "../components/SessionModal";
 
-function ProjectsPage({ yarns }) {
+function ProjectsPage({
+  projects,
+  handleAddProject,
+  handleAddSession,
+  handleDeleteProject,
+  handleEditProject,
+  toggleFavorite,
+  yarns,
+}) {
   const [selectedProject, setSelectedProject] = useState(null);
   const [activeFilter, setActiveFilter] = useState("all");
-  const [projects, setProjects] = useState(sampleProjects);
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [showSessionModal, setShowSessionModal] = useState(false);
   const [showEditProjectModal, setShowEditProjectModal] = useState(false);
@@ -28,78 +34,6 @@ function ProjectsPage({ yarns }) {
   const filteredProjects = projects.filter(
     (p) => activeFilter === "all" || p.status === activeFilter,
   );
-  // .filter((p) => !showFavoritesOnly || p.isFavorite);
-
-  function toggleFavorite(projectId) {
-    setProjects(
-      projects.map((p) =>
-        p.id === projectId ? { ...p, isFavorite: !p.isFavorite } : p,
-      ),
-    );
-  }
-
-  function handleAddProject(formData) {
-    const newProject = {
-      id: Date.now().toString(),
-      name: formData.name,
-      hookSize: formData.hookSize,
-      yarnWeight: formData.yarnWeight,
-      color: formData.color,
-      photo: formData.photo,
-      yarns: [],
-      parts: formData.parts,
-      status: "queued",
-      isFavorite: false,
-      sessions: [],
-      timeSpent: 0,
-      createdAt: new Date().toISOString(),
-      completedAt: null,
-    };
-    setProjects([...projects, newProject]);
-    setShowProjectModal(false);
-  }
-
-  function handleAddSession(projectId, sessionData) {
-    setProjects(
-      projects.map((p) => {
-        if (p.id !== projectId) return p;
-
-        const newSession = {
-          id: Date.now().toString(),
-          date: sessionData.date,
-          duration: sessionData.duration,
-          note: sessionData.note,
-        };
-
-        const updatedParts = p.parts.map((part) => ({
-          ...part,
-          completedRows:
-            part.completedRows + (sessionData.partUpdates[part.id] || 0),
-        }));
-
-        return {
-          ...p,
-          sessions: [...p.sessions, newSession],
-          parts: updatedParts,
-          timeSpent: p.timeSpent + sessionData.duration,
-        };
-      }),
-    );
-  }
-
-  function handleDeleteProject(projectId) {
-    setProjects(projects.filter((p) => p.id !== projectId));
-    setSelectedProject(null);
-  }
-
-  function handleEditProject(formData) {
-    setProjects(
-      projects.map((p) =>
-        p.id === currentProject.id ? { ...p, ...formData } : p,
-      ),
-    );
-    setShowEditProjectModal(false);
-  }
 
   return (
     <div>
@@ -165,7 +99,10 @@ function ProjectsPage({ yarns }) {
       {showProjectModal && (
         <ProjectModal
           onClose={() => setShowProjectModal(false)}
-          onAdd={handleAddProject}
+          onAdd={(formData) => {
+            handleAddProject(formData);
+            setShowProjectModal(false);
+          }}
           yarns={yarns}
         />
       )}
@@ -174,7 +111,10 @@ function ProjectsPage({ yarns }) {
         <ProjectModal
           project={currentProject}
           onClose={() => setShowEditProjectModal(false)}
-          onAdd={handleEditProject}
+          onAdd={(formData) => {
+            handleEditProject(currentProject.id, formData);
+            setShowEditProjectModal(false);
+          }}
           yarns={yarns}
         />
       )}
@@ -195,8 +135,12 @@ function ProjectsPage({ yarns }) {
         <ProjectDetail
           project={currentProject}
           onAddSession={() => setShowSessionModal(true)}
-          onDelete={() => handleDeleteProject(currentProject.id)}
+          onDelete={() => {
+            handleDeleteProject(currentProject.id);
+            setSelectedProject(null);
+          }}
           onEdit={() => setShowEditProjectModal(true)}
+          yarns={yarns}
         />
       )}
     </div>
