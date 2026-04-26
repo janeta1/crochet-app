@@ -1,7 +1,7 @@
 import { calculateProgress } from "../utils/projectUtils";
-import { Trash2 } from 'lucide-react';
+import { Trash2, Pencil } from "lucide-react";
 
-function ProjectDetail({ project, onAddSession, onDelete }) {
+function ProjectDetail({ project, onAddSession, onDelete, onEdit }) {
   const progress = calculateProgress(project);
   return (
     <div className="grid grid-cols-2 gap-6 mt-6">
@@ -9,12 +9,20 @@ function ProjectDetail({ project, onAddSession, onDelete }) {
       <div className="bg-bg-card rounded-xl p-6 border border-border">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-lg">{project.name}</h3>
-          <button
-            className="text-sm text-red-400 hover:text-red-600 cursor-pointer"
-            onClick={onDelete}
-          >
-            <Trash2 size={20} />
-          </button>
+          <div className="flex gap-2">
+            <button
+              className="text-sm text-text-secondary hover:text-text-primary cursor-pointer"
+              onClick={onEdit}
+            >
+              <Pencil size={20} />
+            </button>
+            <button
+              className="text-sm text-red-400 hover:text-red-600 cursor-pointer"
+              onClick={onDelete}
+            >
+              <Trash2 size={20} />
+            </button>
+          </div>
         </div>
 
         <div className="flex justify-between border-b border-border py-2">
@@ -47,7 +55,9 @@ function ProjectDetail({ project, onAddSession, onDelete }) {
             {project.parts.map((part) => (
               <div key={part.id} className="mb-3">
                 <div className="pl-3 flex justify-between mb-1">
-                  <span className="text-text-secondary text-sm">{part.name}</span>
+                  <span className="text-text-secondary text-sm">
+                    {part.name}
+                  </span>
                   <span className="text-text-primary text-sm">
                     {part.completedRows}/{part.totalRows} rows
                   </span>

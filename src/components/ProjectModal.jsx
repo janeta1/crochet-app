@@ -1,15 +1,15 @@
 import { Trash2, Plus, X } from "lucide-react";
 import { useState } from "react";
 
-function ProjectModal({ onClose, onAdd }) {
+function ProjectModal({ onClose, onAdd, project }) {
   const [formData, setFormData] = useState({
-    name: "",
-    hookSize: "",
-    yarnWeight: "",
-    color: "#C4A0A0",
-    photo: null,
-    yarns: [],
-    parts: [],
+    name: project?.name || "",
+    hookSize: project?.hookSize || "",
+    yarnWeight: project?.yarnWeight || "",
+    color: project?.color || "#C4A0A0",
+    photo: project?.photo || null,
+    yarns: project?.yarns || [],
+    parts: project?.parts || [],
   });
 
   function handleInputChange(field, value) {
@@ -47,7 +47,9 @@ function ProjectModal({ onClose, onAdd }) {
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-bg-card rounded-xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-xl">New Project</h3>
+          <h3 className="text-xl">
+            {project ? "Edit Project" : "New Project"}
+          </h3>
           <button
             onClick={onClose}
             className="text-text-secondary hover:text-text-primary cursor-pointer"
@@ -118,24 +120,37 @@ function ProjectModal({ onClose, onAdd }) {
             <label className="text-base text-text-secondary mb-1 block">
               Project photo (optional)
             </label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = () => handleInputChange("photo", reader.result);
-                reader.readAsDataURL(file);
-              }}
-              className="w-full text-sm text-text-secondary"
-            />
-            {formData.photo && (
-              <img
-                src={formData.photo}
-                alt="Project"
-                className="mt-2 h-32 w-full object-cover rounded-lg"
+            <label className="flex items-center gap-2 px-4 py-2 rounded-lg border border-dashed border-border hover:border-accent cursor-pointer text-sm text-text-secondary w-full justify-center">
+              <Plus size={16} />
+              {formData.photo ? "Change photo" : "Upload photo"}
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  if (!file) return;
+                  const reader = new FileReader();
+                  reader.onload = () =>
+                    handleInputChange("photo", reader.result);
+                  reader.readAsDataURL(file);
+                }}
               />
+            </label>
+            {formData.photo && (
+              <div className="relative">
+                <img
+                  src={formData.photo}
+                  alt="Project"
+                  className="mt-2 h-32 w-full object-cover rounded-lg"
+                />
+                <button
+                  onClick={() => handleInputChange("photo", null)}
+                  className="absolute top-1 right-1 bg-black/50 text-white rounded-full p-1 hover:bg-black/70 cursor-pointer"
+                >
+                  <X size={12} />
+                </button>
+              </div>
             )}
           </div>
 
@@ -195,8 +210,11 @@ function ProjectModal({ onClose, onAdd }) {
             >
               Cancel
             </button>
-            <button className="px-4 py-2 rounded-lg bg-accent text-white hover:bg-accent-hover text-sm cursor-pointer" onClick = {() => onAdd(formData)}>
-              Create Project
+            <button
+              className="px-4 py-2 rounded-lg bg-accent text-white hover:bg-accent-hover text-sm cursor-pointer"
+              onClick={() => onAdd(formData)}
+            >
+              {project ? "Save Changes" : "Create Project"}
             </button>
           </div>
         </div>

@@ -12,6 +12,7 @@ function ProjectsPage() {
   const [projects, setProjects] = useState(sampleProjects);
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [showSessionModal, setShowSessionModal] = useState(false);
+  const [showEditProjectModal, setShowEditProjectModal] = useState(false);
   const currentProject = projects.find((p) => p.id === selectedProject?.id);
   // const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
@@ -91,6 +92,15 @@ function ProjectsPage() {
     setSelectedProject(null);
   }
 
+  function handleEditProject(formData) {
+    setProjects(
+      projects.map((p) =>
+        p.id === currentProject.id ? { ...p, ...formData } : p,
+      ),
+    );
+    setShowEditProjectModal(false);
+  }
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
@@ -158,6 +168,14 @@ function ProjectsPage() {
         />
       )}
 
+      {showEditProjectModal && (
+        <ProjectModal
+          project={currentProject}
+          onClose={() => setShowEditProjectModal(false)}
+          onAdd={handleEditProject}
+        />
+      )}
+
       {showSessionModal && (
         <SessionModal
           project={currentProject}
@@ -175,6 +193,7 @@ function ProjectsPage() {
           project={currentProject}
           onAddSession={() => setShowSessionModal(true)}
           onDelete={() => handleDeleteProject(currentProject.id)}
+          onEdit={() => setShowEditProjectModal(true)}
         />
       )}
     </div>
