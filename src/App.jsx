@@ -12,7 +12,7 @@ import { sampleProjects } from "./data/sampleProjects";
 function App() {
   const [isDark, setIsDark] = useState(false);
   const { projects, handleAddProject, handleAddSession, handleDeleteProject, handleEditProject, toggleFavorite } = useProjects();
-  const { yarns, handleDeleteYarn, handleAddYarn, handleEditYarn, toggleFavorite: toggleYarnFavorite } = useYarns();
+  const { yarns, loading: yarnsLoading, handleDeleteYarn, handleAddYarn, handleEditYarn, toggleFavorite: toggleYarnFavorite } = useYarns();
   
 
   useEffect(() => {
@@ -35,7 +35,7 @@ function App() {
         >
           <Route index element={<Navigate to="/projects" replace />} />
           <Route path="projects" element={<ProjectsPage projects={projects} handleAddProject={handleAddProject} handleAddSession={handleAddSession} handleDeleteProject={handleDeleteProject} handleEditProject={handleEditProject} toggleFavorite={toggleFavorite} yarns={yarns} />} />
-          <Route path="yarn-stash" element={<YarnStashPage yarns={yarns} handleAddYarn={handleAddYarn} handleEditYarn={handleEditYarn} handleDeleteYarn={handleDeleteYarn} toggleFavorite={toggleYarnFavorite} />} />
+          <Route path="yarn-stash" element={<YarnStashPage yarns={yarns} loading={yarnsLoading} handleAddYarn={handleAddYarn} handleEditYarn={handleEditYarn} handleDeleteYarn={handleDeleteYarn} toggleFavorite={toggleYarnFavorite} />} />
           <Route path="favorites" element={<FavoritesPage projects={projects} handleAddSession={handleAddSession} handleDeleteProject={handleDeleteProject} handleEditProject={handleEditProject} toggleFavorite={toggleFavorite} yarns={yarns} />} />
         </Route>
       </Routes>
