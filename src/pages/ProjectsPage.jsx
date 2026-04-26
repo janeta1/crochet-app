@@ -12,7 +12,7 @@ function ProjectsPage() {
   const [projects, setProjects] = useState(sampleProjects);
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [showSessionModal, setShowSessionModal] = useState(false);
-  const currentProject = projects.find(p => p.id === selectedProject?.id);
+  const currentProject = projects.find((p) => p.id === selectedProject?.id);
   // const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
   const handleProjectClick = (project) => {
@@ -84,6 +84,11 @@ function ProjectsPage() {
         };
       }),
     );
+  }
+
+  function handleDeleteProject(projectId) {
+    setProjects(projects.filter((p) => p.id !== projectId));
+    setSelectedProject(null);
   }
 
   return (
@@ -169,6 +174,7 @@ function ProjectsPage() {
         <ProjectDetail
           project={currentProject}
           onAddSession={() => setShowSessionModal(true)}
+          onDelete={() => handleDeleteProject(currentProject.id)}
         />
       )}
     </div>

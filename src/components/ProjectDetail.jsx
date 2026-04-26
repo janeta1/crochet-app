@@ -1,12 +1,21 @@
 import { calculateProgress } from "../utils/projectUtils";
+import { Trash2 } from 'lucide-react';
 
-function ProjectDetail({ project, onAddSession }) {
+function ProjectDetail({ project, onAddSession, onDelete }) {
   const progress = calculateProgress(project);
   return (
     <div className="grid grid-cols-2 gap-6 mt-6">
       {/* left side - details */}
       <div className="bg-bg-card rounded-xl p-6 border border-border">
-        <h3 className="text-lg mb-6">{project.name}</h3>
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-lg">{project.name}</h3>
+          <button
+            className="text-sm text-red-400 hover:text-red-600 cursor-pointer"
+            onClick={onDelete}
+          >
+            <Trash2 size={20} />
+          </button>
+        </div>
 
         <div className="flex justify-between border-b border-border py-2">
           {" "}
@@ -37,9 +46,9 @@ function ProjectDetail({ project, onAddSession }) {
             <p className="text-text-secondary mb-3">Parts</p>
             {project.parts.map((part) => (
               <div key={part.id} className="mb-3">
-                <div className="flex justify-between mb-1">
-                  <span className="text-text-primary text-sm">{part.name}</span>
-                  <span className="text-text-secondary text-sm">
+                <div className="pl-3 flex justify-between mb-1">
+                  <span className="text-text-secondary text-sm">{part.name}</span>
+                  <span className="text-text-primary text-sm">
                     {part.completedRows}/{part.totalRows} rows
                   </span>
                 </div>
