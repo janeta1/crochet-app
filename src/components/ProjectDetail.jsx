@@ -1,8 +1,11 @@
 import { calculateProgress } from "../utils/projectUtils";
 import { Trash2, Pencil } from "lucide-react";
 
-function ProjectDetail({ project, onAddSession, onDelete, onEdit }) {
+function ProjectDetail({ project, onAddSession, onDelete, onEdit, yarns }) {
   const progress = calculateProgress(project);
+  const linkedYarns = (yarns || []).filter((y) =>
+    project.yarns?.includes(y.id),
+  );
   return (
     <div className="grid grid-cols-2 gap-6 mt-6">
       {/* left side - details */}
@@ -37,16 +40,31 @@ function ProjectDetail({ project, onAddSession, onDelete, onEdit }) {
           {" "}
           <span className="text-text-secondary">Time Spent</span>
           <span className="text-text-primary font-medium">
-            {Math.floor(project.timeSpent / 60)} hours {project.timeSpent % 60} mins
+            {Math.floor(project.timeSpent / 60)} hours {project.timeSpent % 60}{" "}
+            mins
           </span>
         </div>
 
         <div className="flex justify-between border-b border-border py-2">
           {" "}
           <span className="text-text-secondary">Yarn Used</span>
-          <span className="text-text-primary font-medium">
-            {project.yarnWeight}
-          </span>
+          <div className="flex flex-col items-end gap-1">
+            {linkedYarns.length > 0 ? (
+              linkedYarns.map((yarn) => (
+                <div key={yarn.id} className="flex items-center gap-2">
+                  <div
+                    className="w-3 h-3 rounded-full"
+                    style={{ backgroundColor: yarn.color }}
+                  />
+                  <span className="text-text-primary font-medium">
+                    {yarn.name}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <span className="text-text-primary font-medium">—</span>
+            )}
+          </div>
         </div>
 
         {project.parts.length > 0 && (
