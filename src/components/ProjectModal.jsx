@@ -20,7 +20,13 @@ function ProjectModal({ onClose, onAdd, project, yarns }) {
       ...formData,
       parts: [
         ...formData.parts,
-        { id: Date.now().toString(), name: "", totalRows: 0, completedRows: 0, quantity: 1 },
+        {
+          id: Date.now().toString(),
+          name: "",
+          totalRows: 0,
+          completedRows: 0,
+          quantity: 1,
+        },
       ],
     });
   }
@@ -43,7 +49,7 @@ function ProjectModal({ onClose, onAdd, project, yarns }) {
 
   return (
     // should cover the entire screen
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-bg-card rounded-xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-xl">
@@ -197,44 +203,56 @@ function ProjectModal({ onClose, onAdd, project, yarns }) {
               </p>
             )}
 
-            {formData.parts.map((part) => (
-              <div key={part.id} className="flex gap-2 items-center mb-2">
-                <input
-                  type="text"
-                  value={part.name}
-                  onChange={(e) => updatePart(part.id, "name", e.target.value)}
-                  placeholder="Part name"
-                  className="flex-1 px-3 py-2 rounded-lg border border-border bg-bg-primary text-text-primary text-sm focus:outline-none focus:border-accent"
-                />
-                <input
-                  type="number"
-                  placeholder="Qty"
-                  min="1"
-                  value={part.quantity || 1}
-                  onChange={(e) =>
-                    updatePart(
-                      part.id,
-                      "quantity",
-                      parseInt(e.target.value) || 1,
-                    )
-                  }
-                  className="w-30 px-3 py-2 rounded-lg border border-border bg-bg-primary text-text-primary text-sm focus:outline-none focus:border-accent"
-                />
-                <input
-                  type="number"
-                  value={part.totalRows}
-                  onChange={(e) =>
-                    updatePart(part.id, "totalRows", e.target.value)
-                  }
-                  placeholder="Total rows"
-                  className="w-30 px-3 py-2 rounded-lg border border-border bg-bg-primary text-text-primary text-sm focus:outline-none focus:border-accent"
-                />
-                <button
-                  onClick={() => removePart(part.id)}
-                  className="text-sm text-text-secondary hover:text-red-500 cursor-pointer"
-                >
-                  <Trash2 size={16} />
-                </button>
+            {formData.parts.map((part, index) => (
+              <div
+                key={part.id}
+                className="border border-border rounded-lg p-2 mb-3"
+              >
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm text-text-secondary">
+                    Part {index + 1}
+                  </span>
+                  <button
+                    onClick={() => removePart(part.id)}
+                    className="text-text-secondary hover:text-red-500 cursor-pointer"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  <input
+                    type="text"
+                    value={part.name}
+                    onChange={(e) =>
+                      updatePart(part.id, "name", e.target.value)
+                    }
+                    placeholder="Part name"
+                    className="flex-1 px-3 py-2 rounded-lg border border-border bg-bg-primary text-text-primary text-sm focus:outline-none focus:border-accent"
+                  />
+                  <input
+                    type="number"
+                    placeholder="Qty"
+                    min="1"
+                    value={part.quantity || 1}
+                    onChange={(e) =>
+                      updatePart(
+                        part.id,
+                        "quantity",
+                        parseInt(e.target.value) || 1,
+                      )
+                    }
+                    className="w-25 px-3 py-2 rounded-lg border border-border bg-bg-primary text-text-primary text-sm focus:outline-none focus:border-accent"
+                  />
+                  <input
+                    type="number"
+                    value={part.totalRows}
+                    onChange={(e) =>
+                      updatePart(part.id, "totalRows", e.target.value)
+                    }
+                    placeholder="Total rows"
+                    className="w-25 px-3 py-2 rounded-lg border border-border bg-bg-primary text-text-primary text-sm focus:outline-none focus:border-accent"
+                  />
+                </div>
               </div>
             ))}
           </div>
