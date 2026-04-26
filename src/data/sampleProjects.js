@@ -1,64 +1,79 @@
 export const sampleProjects = [
   {
-    id: '1',
-    name: 'Granny Square Blanket',
-    status: 'in-progress',
-    hookSize: '5mm',
-    yarnWeight: 'Worsted',
-    color: '#C4A0A0',
+    id: "1",
+    name: "Granny Square Blanket",
+    status: "in-progress",
+    hookSize: "5mm",
+    yarnWeight: "Worsted",
+    color: "#C4A0A0",
     isFavorite: true,
-    parts: [
-      { id: 'p1', name: 'Squares', totalRows: 100, completedRows: 65 }
+    parts: [{ id: "p1", name: "Squares", totalRows: 100, completedRows: 65 }],
+    sessions: [
+      {
+        id: "s1",
+        date: "March 28, 2026",
+        duration: 120,
+        note: "Completed rows 15-20. Pattern is starting to show nicely!",
+      },
+      {
+        id: "s2",
+        date: "March 24, 2026",
+        duration: 90,
+        note: "Frogged 3 rows today... again 😭",
+      },
+      {
+        id: "s3",
+        date: "March 20, 2026",
+        duration: 60,
+        note: "Started the main body. Really happy with the color!",
+      },
     ],
-    sessions: [],
     timeSpent: 720,
-    createdAt: '2026-03-01'
+    createdAt: "2026-03-01",
   },
   {
-    id: '2',
-    name: 'Amigurumi Bear',
-    status: 'done',
-    hookSize: '3.5mm',
-    yarnWeight: 'DK',
-    color: '#9B8EBD',
+    id: "2",
+    name: "Amigurumi Bear",
+    status: "done",
+    hookSize: "3.5mm",
+    yarnWeight: "DK",
+    color: "#9B8EBD",
     isFavorite: false,
     parts: [
-      { id: 'p1', name: 'Head', totalRows: 20, completedRows: 20 },
-      { id: 'p2', name: 'Body', totalRows: 30, completedRows: 30 }
+      { id: "p1", name: "Head", totalRows: 20, completedRows: 20 },
+      { id: "p2", name: "Body", totalRows: 30, completedRows: 30 },
     ],
     sessions: [],
     timeSpent: 480,
-    createdAt: '2026-02-15'
+    createdAt: "2026-02-15",
   },
   {
-    id: '3',
-    name: 'Summer Tote Bag',
-    status: 'in-progress',
-    hookSize: '4mm',
-    yarnWeight: 'Cotton',
-    color: '#D4A5A5',
+    id: "3",
+    name: "Summer Tote Bag",
+    status: "in-progress",
+    hookSize: "4mm",
+    yarnWeight: "Cotton",
+    color: "#D4A5A5",
     isFavorite: true,
-    parts: [
-      { id: 'p1', name: 'Body', totalRows: 40, completedRows: 12 }
-    ],
+    parts: [{ id: "p1", name: "Body", totalRows: 40, completedRows: 12 }],
     sessions: [],
     timeSpent: 180,
-    createdAt: '2026-03-10'
+    createdAt: "2026-03-10",
   },
   {
-    id: '4',
-    name: 'Baby Booties',
-    status: 'queued',
-    hookSize: '3mm',
-    yarnWeight: 'Sport',
-    color: '#B8A898',
+    id: "4",
+    name: "Baby Booties",
+    status: "queued",
+    hookSize: "3mm",
+    yarnWeight: "Sport",
+    color: "#B8A898",
     isFavorite: false,
     parts: [
-      { id: 'p1', name: 'Bootie 1', totalRows: 20, completedRows: 0 },
-      { id: 'p2', name: 'Bootie 2', totalRows: 20, completedRows: 0 }
+      { id: "p1", name: "Bootie 1", totalRows: 20, completedRows: 0 },
+      { id: "p2", name: "Bootie 2", totalRows: 20, completedRows: 0 },
     ],
     sessions: [],
     timeSpent: 0,
-    createdAt: '2026-03-20'
-  }
-]
+    createdAt: "2026-03-20",
+  },
+];
