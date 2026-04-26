@@ -29,7 +29,7 @@ function ProjectCard({ project, isSelected, onClick, onFavoriteToggle }) {
       <div className="p-4">
         <div className="flex justify-between items-start mb-1">
           <p className="font-medium text-text-primary">{project.name}</p>
-          <button className="text-accent hover hover:text-accent-hover" onClick={(e) => {
+          <button className="text-accent hover:text-accent-hover" onClick={(e) => {
             e.stopPropagation(); // Prevent card click
             onFavoriteToggle();
           }}>
