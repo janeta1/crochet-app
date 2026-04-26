@@ -88,7 +88,7 @@ function ProjectsPage({
       {!loading && filteredProjects.length === 0 && (
         <div className="flex flex-col gap-2 items-center justify-center py-15 text-text-secondary">
           <img
-            src="src\assets\sad_yarn.png"
+            src="/sad_yarn.png"
             alt="No projects"
             className="w-30 h-30 mb-3"
           />

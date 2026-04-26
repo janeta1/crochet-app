@@ -43,13 +43,6 @@ function App() {
     localStorage.setItem("theme", isDark ? "dark" : "light");
   }, [isDark]);
 
-  useEffect(() => {
-    document.documentElement.setAttribute(
-      "data-theme",
-      isDark ? "dark" : "light",
-    );
-  }, [isDark]);
-
   function toggleTheme() {
     setIsDark(!isDark);
   }
