@@ -3,7 +3,8 @@
 A cozy crochet project manager built for crafters who want to keep track of their works in progress, yarn stash, and crochet sessions.
 
 ## Live Demo
-...
+
+[Stitchbook](https://janeta1.github.io/crochet-app/#/projects)
 
 ## Features
 
