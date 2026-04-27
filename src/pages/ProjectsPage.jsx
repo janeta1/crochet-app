@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import ProjectCard from "../components/ProjectCard";
 import { Heart } from "lucide-react";
 import ProjectModal from "../components/ProjectModal";
-import ProjectDetail from "../components/ProjectDetail";
+import ProjectDetailModal from "../components/ProjectDetailModal";
 import SessionModal from "../components/SessionModal";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -48,6 +48,7 @@ function ProjectsPage({ projects, loading, yarns }) {
       createdAt: new Date().toISOString(),
       completedAt: null,
     };
+    console.log("saving project:", newProject)
     dispatch(addProjectAsync(newProject));
     setShowProjectModal(false);
   }
@@ -155,8 +156,9 @@ function ProjectsPage({ projects, loading, yarns }) {
 
       {/* for project details */}
       {currentProject && (
-        <ProjectDetail
+        <ProjectDetailModal
           project={currentProject}
+          onClose={() => setSelectedProject(null)}
           onAddSession={() => setShowSessionModal(true)}
           onDelete={() => {
             dispatch(deleteProjectAsync(currentProject.id));

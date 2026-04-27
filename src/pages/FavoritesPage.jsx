@@ -1,17 +1,19 @@
 import ProjectCard from "../components/ProjectCard";
 import { useState } from "react";
-import ProjectDetail from "../components/ProjectDetail";
+import ProjectDetailModal from "../components/ProjectDetailModal";
 import SessionModal from "../components/SessionModal";
 import ProjectModal from "../components/ProjectModal";
-import { HeartOff } from 'lucide-react';
+import { HeartOff } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteProjectAsync, editProjectAsync, toggleFavoriteAsync, addSessionAsync, changeStatusAsync } from "../store/projectsSlice";
+import {
+  deleteProjectAsync,
+  editProjectAsync,
+  toggleFavoriteAsync,
+  addSessionAsync,
+  changeStatusAsync,
+} from "../store/projectsSlice";
 
-function FavoritesPage({
-  projects,
-  loading,
-  yarns,
-}) {
+function FavoritesPage({ projects, loading, yarns }) {
   const dispatch = useDispatch();
   const favoriteProjects = projects.filter((p) => p.isFavorite);
   const [selectedProject, setSelectedProject] = useState(null);
@@ -38,7 +40,9 @@ function FavoritesPage({
             yarns={yarns}
             isSelected={selectedProject?.id === project.id}
             onClick={() => handleProjectClick(project)}
-            onFavoriteToggle={() => dispatch(toggleFavoriteAsync({ id: project.id, projects }))}
+            onFavoriteToggle={() =>
+              dispatch(toggleFavoriteAsync({ id: project.id, projects }))
+            }
           />
         ))}
       </div>
@@ -52,8 +56,9 @@ function FavoritesPage({
       )}
 
       {currentProject && (
-        <ProjectDetail
+        <ProjectDetailModal
           project={currentProject}
+          onClose={() => setSelectedProject(null)}
           onAddSession={() => {
             setShowSessionModal(true);
           }}
@@ -62,15 +67,25 @@ function FavoritesPage({
             setSelectedProject(null);
           }}
           onEdit={() => setShowEditProjectModal(true)}
+          onStatusChange={(status) =>
+            dispatch(
+              changeStatusAsync({ id: currentProject.id, status, projects }),
+            )
+          }
           yarns={yarns}
         />
       )}
 
       {showEditProjectModal && (
-        <ProjectModal 
+        <ProjectModal
           project={currentProject}
           onClose={() => setShowEditProjectModal(false)}
-          onAdd={(formData) => {dispatch(editProjectAsync({ id: currentProject.id, data: formData })); setShowEditProjectModal(false);}}
+          onAdd={(formData) => {
+            dispatch(
+              editProjectAsync({ id: currentProject.id, data: formData }),
+            );
+            setShowEditProjectModal(false);
+          }}
           yarns={yarns}
         />
       )}
@@ -80,7 +95,13 @@ function FavoritesPage({
           project={currentProject}
           onClose={() => setShowSessionModal(false)}
           onAdd={(formData) => {
-            dispatch(addSessionAsync({ id: currentProject.id, data: formData, projects }));
+            dispatch(
+              addSessionAsync({
+                projectId: currentProject.id,
+                data: formData,
+                projects,
+              }),
+            );
             setShowSessionModal(false);
           }}
         />

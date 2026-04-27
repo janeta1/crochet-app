@@ -1,7 +1,11 @@
 import { Trash2, Plus, X } from "lucide-react";
 import { useState } from "react";
+import ImageCropper from "./ImageCropper";
 
 function ProjectModal({ onClose, onAdd, project, yarns }) {
+  const [showCropper, setShowCropper] = useState(false);
+  const [rawPhoto, setRawPhoto] = useState(null);
+
   const [formData, setFormData] = useState({
     name: project?.name || "",
     hookSize: project?.hookSize || "",
@@ -49,7 +53,7 @@ function ProjectModal({ onClose, onAdd, project, yarns }) {
 
   return (
     // should cover the entire screen
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-60 p-4">
       <div className="bg-bg-card rounded-xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-xl">
@@ -160,8 +164,10 @@ function ProjectModal({ onClose, onAdd, project, yarns }) {
                   const file = e.target.files[0];
                   if (!file) return;
                   const reader = new FileReader();
-                  reader.onload = () =>
-                    handleInputChange("photo", reader.result);
+                  reader.onload = () => {
+                    setRawPhoto(reader.result);
+                    setShowCropper(true);
+                  };
                   reader.readAsDataURL(file);
                 }}
               />
@@ -274,6 +280,15 @@ function ProjectModal({ onClose, onAdd, project, yarns }) {
           </div>
         </div>
       </div>
+      {showCropper && (
+        <ImageCropper
+          image={rawPhoto}
+          onComplete={(croppedImage) =>
+            handleInputChange("photo", croppedImage)
+          }
+          onClose={() => setShowCropper(false)}
+        />
+      )}
     </div>
   );
 }

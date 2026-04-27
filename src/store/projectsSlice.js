@@ -17,7 +17,7 @@ export const addProjectAsync = createAsyncThunk(
   "projects/addProject",
   async (projectData) => {
     const newProject = await saveProject(projectData);
-    return newProject;
+    return projectData;
   },
 );
 

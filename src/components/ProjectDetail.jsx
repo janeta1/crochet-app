@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { calculateProgress } from "../utils/projectUtils";
-import { Trash2, Pencil } from "lucide-react";
+import { Trash2, Pencil, X } from "lucide-react";
 
 function ProjectDetail({
   project,
@@ -10,14 +11,39 @@ function ProjectDetail({
   yarns,
 }) {
   const progress = calculateProgress(project);
+  const [showPhoto, setShowPhoto] = useState(false);
   console.log(progress);
   const linkedYarns = (yarns || []).filter((y) =>
     project.yarns?.includes(y.id),
   );
+
   return (
     <div className="grid lg:grid-cols-2 grid-cols-1 gap-6 mt-6">
       {/* left side - details */}
       <div className="bg-bg-card rounded-xl p-6 border border-border">
+        {/* the img */}
+        {project?.photo && (
+          <img
+            src={project.photo}
+            alt={project.name}
+            className="w-full h-48 object-cover mb-7 cursor-pointer rounded-xl"
+            onClick={() => setShowPhoto(true)}
+          />
+        )}
+        {/* the lightbox */}
+        {showPhoto && (
+          <div
+            className="fixed inset-0 bg-black/90 flex items-center justify-center p-4"
+            onClick={() => setShowPhoto(false)}
+          >
+            <X size={20} className="text-white absolute top-4 right-4 cursor-pointer" />
+            <img
+              src={project.photo}
+              alt={project.name}
+              className="max-w-full max-h-full object-contain rounded-xl"
+            />
+          </div>
+        )}
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-lg">{project.name}</h3>
           <div className="flex items-center gap-2">
