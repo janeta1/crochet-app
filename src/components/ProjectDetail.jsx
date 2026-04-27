@@ -20,7 +20,7 @@ function ProjectDetail({
   return (
     <div className="grid lg:grid-cols-2 grid-cols-1 gap-6 mt-6">
       {/* left side - details */}
-      <div className="bg-bg-card rounded-xl p-6 border border-border">
+      <div className="bg-bg-card rounded-xl p-6 border border-border overflow-y-auto max-h-[75vh]">
         {/* the img */}
         {project?.photo && (
           <img
@@ -111,7 +111,7 @@ function ProjectDetail({
         </div>
 
         <div className="overflow-y-auto max-h-38">
-          {(project.parts.length || []) > 0 && (
+          {(project.parts || []).length > 0 && (
             <div className="border-b border-border py-2">
               <p className="text-text-secondary mb-3">Parts</p>
               {(project.parts || []).map((part) => (
@@ -153,7 +153,7 @@ function ProjectDetail({
       </div>
 
       {/* right side - session logs */}
-      <div className="bg-bg-card rounded-xl p-6 border border-border">
+      <div className="bg-bg-card rounded-xl p-6 border border-border overflow-y-auto max-h-[75vh]">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-lg">Session Log</h3>
           <button
@@ -164,12 +164,12 @@ function ProjectDetail({
           </button>
         </div>
 
-        {(project.sessions.length || []) === 0 ? (
+        {(project.sessions || []).length === 0 ? (
           <p className="pt-10 flex items-center justify-center text-text-secondary text-sm italic">
             No sessions yet
           </p>
         ) : (
-          <div className="overflow-y-auto max-h-92">
+          <div>
             {[...(project.sessions || [])].reverse().map((session) => (
               <div key={session.id} className="flex gap-4 mb-4">
                 <div className="w-2 h-2 rounded-full bg-accent mt-2"></div>
