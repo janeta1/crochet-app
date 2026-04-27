@@ -88,7 +88,7 @@ function ProjectDetail({
           {(project.parts.length || []) > 0 && (
             <div className="border-b border-border py-2">
               <p className="text-text-secondary mb-3">Parts</p>
-              {project.parts.map((part) => (
+              {(project.parts || []).map((part) => (
                 <div key={part.id} className="mb-3">
                   <div className="pl-3 flex justify-between mb-1">
                     <span className="text-text-secondary text-sm">
