@@ -1,15 +1,19 @@
 import YarnCard from "../components/YarnCard";
 import { useState } from "react";
 import YarnModal from "../components/YarnModal";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addYarnAsync,
+  deleteYarnAsync,
+  editYarnAsync,
+  toggleYarnFavoriteAsync,
+} from "../store/yarnSlice";
 
-function YarnStashPage({
-  yarns,
-  loading,
-  handleAddYarn,
-  handleEditYarn,
-  handleDeleteYarn,
-  toggleFavorite,
-}) {
+function YarnStashPage() {
+  const dispatch = useDispatch();
+  const yarns = useSelector((state) => state.yarns.items);
+  const loading = useSelector((state) => state.yarns.loading);
+
   const weights = ["all", ...new Set(yarns.map((y) => y.weight))];
   const [activeWeight, setActiveWeight] = useState("all");
   const [showYarnModal, setShowYarnModal] = useState(false);
@@ -19,6 +23,15 @@ function YarnStashPage({
   const filteredYarns = yarns.filter(
     (y) => activeWeight === "all" || y.weight === activeWeight,
   );
+
+  function handleAddYarn(formData) {
+    const newYarn = {
+      id: crypto.randomUUID(),
+      ...formData,
+      isFavorite: false,
+    };
+    dispatch(addYarnAsync(newYarn));
+  }
 
   return (
     <div>
@@ -51,8 +64,8 @@ function YarnStashPage({
           <YarnCard
             key={yarn.id}
             yarn={yarn}
-            onDelete={() => handleDeleteYarn(yarn.id)}
-            onFavoriteToggle={() => toggleFavorite(yarn.id)}
+            onDelete={() => dispatch(deleteYarnAsync(yarn.id))}
+            onFavoriteToggle={() => dispatch(toggleYarnFavoriteAsync({ id: yarn.id, yarns }))}
             onEdit={() => {
               setSelectedYarn(yarn);
               setShowEditYarnModal(true);
@@ -89,7 +102,7 @@ function YarnStashPage({
           yarn={selectedYarn}
           onClose={() => setShowEditYarnModal(false)}
           onAdd={(formData) => {
-            handleEditYarn(selectedYarn.id, formData);
+            dispatch(editYarnAsync({ id: selectedYarn.id, data: { ...selectedYarn, ...formData } }));
             setShowEditYarnModal(false);
           }}
         />

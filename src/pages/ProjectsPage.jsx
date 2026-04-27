@@ -4,18 +4,18 @@ import { Heart } from "lucide-react";
 import ProjectModal from "../components/ProjectModal";
 import ProjectDetail from "../components/ProjectDetail";
 import SessionModal from "../components/SessionModal";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addProjectAsync,
+  deleteProjectAsync,
+  editProjectAsync,
+  toggleFavoriteAsync,
+  changeStatusAsync,
+  addSessionAsync,
+} from "../store/projectsSlice";
 
-function ProjectsPage({
-  projects,
-  loading,
-  handleAddProject,
-  handleAddSession,
-  handleDeleteProject,
-  handleEditProject,
-  toggleFavorite,
-  yarns,
-  handleStatusChange,
-}) {
+function ProjectsPage({ projects, loading, yarns }) {
+  const dispatch = useDispatch();
   const [selectedProject, setSelectedProject] = useState(null);
   const [activeFilter, setActiveFilter] = useState("all");
   const [showProjectModal, setShowProjectModal] = useState(false);
@@ -31,6 +31,26 @@ function ProjectsPage({
       setSelectedProject(project);
     }
   };
+
+  function handleAddProject(formData) {
+    const newProject = {
+      id: crypto.randomUUID(),
+      name: formData.name,
+      hookSize: formData.hookSize,
+      color: formData.color,
+      photo: formData.photo,
+      yarns: formData.yarns,
+      parts: formData.parts,
+      status: "queued",
+      isFavorite: false,
+      sessions: [],
+      timeSpent: 0,
+      createdAt: new Date().toISOString(),
+      completedAt: null,
+    };
+    dispatch(addProjectAsync(newProject));
+    setShowProjectModal(false);
+  }
 
   // Derived list
   const filteredProjects = projects.filter(
@@ -80,7 +100,7 @@ function ProjectsPage({
             yarns={yarns}
             isSelected={selectedProject?.id === project.id}
             onClick={() => handleProjectClick(project)}
-            onFavoriteToggle={() => toggleFavorite(project.id)}
+            onFavoriteToggle={() => dispatch(toggleFavoriteAsync({ id: project.id, projects }))}
           />
         ))}
       </div>
@@ -115,7 +135,7 @@ function ProjectsPage({
           project={currentProject}
           onClose={() => setShowEditProjectModal(false)}
           onAdd={(formData) => {
-            handleEditProject(currentProject.id, formData);
+            dispatch(editProjectAsync({ id: currentProject.id, data: { ...currentProject, ...formData } }));
             setShowEditProjectModal(false);
           }}
           yarns={yarns}
@@ -127,7 +147,7 @@ function ProjectsPage({
           project={currentProject}
           onClose={() => setShowSessionModal(false)}
           onAdd={(formData) => {
-            handleAddSession(currentProject.id, formData);
+            dispatch(addSessionAsync({ projectId: currentProject.id, data: formData, projects }));
             setShowSessionModal(false);
           }}
         />
@@ -139,13 +159,13 @@ function ProjectsPage({
           project={currentProject}
           onAddSession={() => setShowSessionModal(true)}
           onDelete={() => {
-            handleDeleteProject(currentProject.id);
+            dispatch(deleteProjectAsync(currentProject.id));
             setSelectedProject(null);
           }}
           onEdit={() => setShowEditProjectModal(true)}
           yarns={yarns}
           onStatusChange={(status) =>
-            handleStatusChange(currentProject.id, status)
+            dispatch(changeStatusAsync({ id: currentProject.id, status, projects }))
           }
         />
       )}

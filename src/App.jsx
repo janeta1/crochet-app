@@ -8,27 +8,22 @@ import { useProjects } from "./hooks/useProjects";
 import { useYarns } from "./hooks/useYarns";
 import { sampleYarns } from "./data/sampleYarns";
 import { sampleProjects } from "./data/sampleProjects";
+import { useDispatch, useSelector } from "react-redux";
+import { loadProjects } from "./store/projectsSlice";
+import { loadYarns } from "./store/yarnSlice";
 
 function App() {
-  const {
-    projects,
-    loading: projectsLoading,
-    handleAddProject,
-    handleAddSession,
-    handleDeleteProject,
-    handleEditProject,
-    toggleFavorite,
-    handleStatusChange,
-  } = useProjects();
-  const {
-    yarns,
-    loading: yarnsLoading,
-    handleDeleteYarn,
-    handleAddYarn,
-    handleEditYarn,
-    toggleFavorite: toggleYarnFavorite,
-  } = useYarns();
+  const dispatch = useDispatch();
+  const projects = useSelector((state) => state.projects.items);
+  const projectsLoading = useSelector((state) => state.projects.loading);
+  const yarns = useSelector((state) => state.yarns.items);
+  const yarnsLoading = useSelector((state) => state.yarns.loading);
 
+  useEffect(() => {
+    dispatch(loadProjects());
+    dispatch(loadYarns());
+  }, [dispatch]);
+  
   // Load theme from localStorage on start
   const [isDark, setIsDark] = useState(() => {
     return localStorage.getItem("theme") === "dark";
@@ -61,12 +56,6 @@ function App() {
               <ProjectsPage
                 projects={projects}
                 loading={projectsLoading}
-                handleAddProject={handleAddProject}
-                handleAddSession={handleAddSession}
-                handleDeleteProject={handleDeleteProject}
-                handleEditProject={handleEditProject}
-                toggleFavorite={toggleFavorite}
-                handleStatusChange={handleStatusChange}
                 yarns={yarns}
               />
             }
@@ -75,12 +64,6 @@ function App() {
             path="yarn-stash"
             element={
               <YarnStashPage
-                yarns={yarns}
-                loading={yarnsLoading}
-                handleAddYarn={handleAddYarn}
-                handleEditYarn={handleEditYarn}
-                handleDeleteYarn={handleDeleteYarn}
-                toggleFavorite={toggleYarnFavorite}
               />
             }
           />
@@ -90,10 +73,6 @@ function App() {
               <FavoritesPage
                 projects={projects}
                 loading={projectsLoading}
-                handleAddSession={handleAddSession}
-                handleDeleteProject={handleDeleteProject}
-                handleEditProject={handleEditProject}
-                toggleFavorite={toggleFavorite}
                 yarns={yarns}
               />
             }

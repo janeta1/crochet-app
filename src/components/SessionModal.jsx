@@ -70,7 +70,7 @@ function SessionModal({ onAdd, onClose, project }) {
                   className="flex justify-between items-center mb-2"
                 >
                   <div>
-                    <span key={part.id} className="text-sm text-text-secondary">
+                    <span className="text-sm text-text-secondary">
                       {part.name}
                     </span>
                     <p className="text-xs text-text-secondary">

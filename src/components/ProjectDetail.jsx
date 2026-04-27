@@ -23,7 +23,7 @@ function ProjectDetail({
           <div className="flex items-center gap-2">
             <select
               value={project.status}
-              onChange={(e) => onStatusChange(e.target.value)}
+              onChange={(e) => onStatusChange?.(e.target.value)}
               className={`text-sm px-3 py-1 rounded-full border border-none cursor-pointer focus:outline-none font-medium ${project.status === "in-progress" ? "bg-status-inprogress-bg text-status-inprogress-text" : project.status === "done" ? "bg-status-done-bg text-status-done-text" : "bg-status-queued-bg text-status-queued-text"}`}
             >
               <option value="queued">Queued</option>
@@ -85,7 +85,7 @@ function ProjectDetail({
         </div>
 
         <div className="overflow-y-auto max-h-38">
-          {project.parts.length > 0 && (
+          {(project.parts.length || []) > 0 && (
             <div className="border-b border-border py-2">
               <p className="text-text-secondary mb-3">Parts</p>
               {project.parts.map((part) => (
@@ -138,13 +138,13 @@ function ProjectDetail({
           </button>
         </div>
 
-        {project.sessions.length === 0 ? (
+        {(project.sessions.length || []) === 0 ? (
           <p className="pt-10 flex items-center justify-center text-text-secondary text-sm italic">
             No sessions yet
           </p>
         ) : (
           <div className="overflow-y-auto max-h-92">
-            {[...project.sessions].reverse().map((session) => (
+            {[...(project.sessions || [])].reverse().map((session) => (
               <div key={session.id} className="flex gap-4 mb-4">
                 <div className="w-2 h-2 rounded-full bg-accent mt-2"></div>
                 <div>

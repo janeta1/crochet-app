@@ -4,16 +4,15 @@ import ProjectDetail from "../components/ProjectDetail";
 import SessionModal from "../components/SessionModal";
 import ProjectModal from "../components/ProjectModal";
 import { HeartOff } from 'lucide-react';
+import { useDispatch, useSelector } from "react-redux";
+import { deleteProjectAsync, editProjectAsync, toggleFavoriteAsync, addSessionAsync, changeStatusAsync } from "../store/projectsSlice";
 
 function FavoritesPage({
   projects,
   loading,
-  handleAddSession,
-  handleDeleteProject,
-  handleEditProject,
-  toggleFavorite,
   yarns,
 }) {
+  const dispatch = useDispatch();
   const favoriteProjects = projects.filter((p) => p.isFavorite);
   const [selectedProject, setSelectedProject] = useState(null);
   const currentProject = projects.find((p) => p.id === selectedProject?.id);
@@ -39,7 +38,7 @@ function FavoritesPage({
             yarns={yarns}
             isSelected={selectedProject?.id === project.id}
             onClick={() => handleProjectClick(project)}
-            onFavoriteToggle={() => toggleFavorite(project.id)}
+            onFavoriteToggle={() => dispatch(toggleFavoriteAsync({ id: project.id, projects }))}
           />
         ))}
       </div>
@@ -59,7 +58,7 @@ function FavoritesPage({
             setShowSessionModal(true);
           }}
           onDelete={() => {
-            handleDeleteProject(currentProject.id);
+            dispatch(deleteProjectAsync(currentProject.id));
             setSelectedProject(null);
           }}
           onEdit={() => setShowEditProjectModal(true)}
@@ -71,7 +70,7 @@ function FavoritesPage({
         <ProjectModal 
           project={currentProject}
           onClose={() => setShowEditProjectModal(false)}
-          onAdd={(formData) => {handleEditProject(currentProject.id, formData); setShowEditProjectModal(false);}}
+          onAdd={(formData) => {dispatch(editProjectAsync({ id: currentProject.id, data: formData })); setShowEditProjectModal(false);}}
           yarns={yarns}
         />
       )}
@@ -81,7 +80,7 @@ function FavoritesPage({
           project={currentProject}
           onClose={() => setShowSessionModal(false)}
           onAdd={(formData) => {
-            handleAddSession(currentProject.id, formData);
+            dispatch(addSessionAsync({ id: currentProject.id, data: formData, projects }));
             setShowSessionModal(false);
           }}
         />
