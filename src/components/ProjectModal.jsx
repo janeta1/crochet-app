@@ -25,7 +25,7 @@ function ProjectModal({ onClose, onAdd, project, yarns }) {
       parts: [
         ...formData.parts,
         {
-          id: Date.now().toString(),
+          id: crypto.randomUUID(),
           name: "",
           totalRows: 0,
           completedRows: 0,

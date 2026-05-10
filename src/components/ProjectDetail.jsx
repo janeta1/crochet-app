@@ -13,7 +13,9 @@ function ProjectDetail({
   const progress = calculateProgress(project);
   const [showPhoto, setShowPhoto] = useState(false);
   console.log(progress);
-  const linkedYarns = project.yarns || [];
+  const linkedYarns = (project.yarns || [])
+    .map((yarnId) => yarns?.find((y) => y.id === yarnId))
+    .filter(Boolean);
 
   return (
     <div className="grid lg:grid-cols-2 grid-cols-1 gap-6 mt-6">
@@ -34,7 +36,10 @@ function ProjectDetail({
             className="fixed inset-0 bg-black/90 flex items-center justify-center p-4"
             onClick={() => setShowPhoto(false)}
           >
-            <X size={20} className="text-white absolute top-4 right-4 cursor-pointer" />
+            <X
+              size={20}
+              className="text-white absolute top-4 right-4 cursor-pointer"
+            />
             <img
               src={project.photo}
               alt={project.name}

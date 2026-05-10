@@ -39,11 +39,12 @@ async function apiFetch(path, options = {}) {
 }
 
 function transformPart(part) {
+  const { total_rows, completed_rows, project_id, ...rest } = part;
   return {
-    ...part,
-    totalRows: part.total_rows,
-    completedRows: part.completed_rows,
-    projectId: part.project_id,
+    ...rest,
+    totalRows: total_rows,
+    completedRows: completed_rows,
+    projectId: project_id,
   };
 }
 
@@ -73,7 +74,7 @@ function transformProject(p) {
     completedAt: completed_at,
     parts: p.parts ? p.parts.map(transformPart) : [],
     sessions: p.sessions || [],
-    yarns: p.yarns ? p.yarns.map(transformYarn) : [],
+    yarns: p.yarns ? p.yarns.map((y) => y.id) : [],
   };
 }
 
