@@ -4,29 +4,29 @@ import {
   saveProject,
   deleteProject as deleteProjectDB,
 } from "../db/database";
+import { api } from "../api/api";
 
 export const loadProjects = createAsyncThunk(
   "projects/loadProjects",
   async () => {
-    const projects = await getAllProjects();
-    return projects;
+    const data = await api.getProjects();
+    return data.data;
   },
 );
 
 export const addProjectAsync = createAsyncThunk(
   "projects/addProject",
   async (projectData) => {
-    const newProject = await saveProject(projectData);
-    return projectData;
+    const newProject = await api.createProject(projectData);
+    return newProject;
   },
 );
 
 export const editProjectAsync = createAsyncThunk(
   "projects/editProject",
   async ({ id, data }) => {
-    const updated = data;
-    await saveProject(updated);
-    return {id, data};
+    const updated = await api.updateProject(id, data);
+    return { id, data: updated };
   },
 );
 
@@ -34,22 +34,18 @@ export const toggleFavoriteAsync = createAsyncThunk(
   "projects/toggleFavorite",
   async ({ id, projects }) => {
     const project = projects.find((p) => p.id === id);
-    const updated = { ...project, isFavorite: !project.isFavorite };
-    await saveProject(updated);
+    const updated = await api.patchProject(id, { favorite: !project.favorite });
     return updated;
   },
 );
 
 export const changeStatusAsync = createAsyncThunk(
   "projects/changeStatus",
-  async ({ id, status, projects }) => {
-    const project = projects.find((p) => p.id === id);
-    const updated = {
-      ...project,
+  async ({ id, status }) => {
+    const updated = await api.patchProject(id, {
       status,
       completedAt: status === "done" ? new Date().toISOString() : null,
-    };
-    await saveProject(updated);
+    });
     return updated;
   },
 );
@@ -57,37 +53,23 @@ export const changeStatusAsync = createAsyncThunk(
 export const deleteProjectAsync = createAsyncThunk(
   "projects/deleteProject",
   async (projectId) => {
-    await deleteProjectDB(projectId);
+    await api.deleteProject(projectId);
     return projectId;
   },
 );
 
 export const addSessionAsync = createAsyncThunk(
   "projects/addSession",
-  async ({ projectId, data, projects }) => {
-    const project = projects.find((p) => p.id === projectId);
-
-    const newSession = {
-      id: crypto.randomUUID(),
+  async ({ projectId, data }) => {
+    await api.logSession({
+      projectId,
       date: data.date,
       duration: data.duration,
       note: data.note,
-    };
+      partUpdates: data.partUpdates,
+    });
 
-    const updatedParts = project.parts.map((part) => ({
-      ...part,
-      completedRows:
-        part.completedRows + (data.partUpdates[part.id] || 0),
-    }));
-
-    const updatedProject = {
-      ...project,
-      sessions: [...project.sessions, newSession],
-      parts: updatedParts,
-      timeSpent: project.timeSpent + (parseInt(data.duration) || 0),
-    };
-
-    await saveProject(updatedProject);
+    const updatedProject = await api.getProject(projectId);
     return updatedProject;
   },
 );
@@ -97,6 +79,7 @@ const projectsSlice = createSlice({
   initialState: {
     items: [],
     loading: false,
+    error: null,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -106,6 +89,9 @@ const projectsSlice = createSlice({
       })
       .addCase(loadProjects.fulfilled, (state, action) => {
         state.items = action.payload;
+        state.loading = false;
+      })
+      .addCase(loadProjects.rejected, (state) => {
         state.loading = false;
       })
       .addCase(addProjectAsync.fulfilled, (state, action) => {
@@ -118,7 +104,7 @@ const projectsSlice = createSlice({
         const { id, data } = action.payload;
         const index = state.items.findIndex((p) => p.id === id);
         if (index !== -1)
-          state.items[index] = { ...state.items[index], ...data };
+          state.items[index] = data;
       })
       .addCase(toggleFavoriteAsync.fulfilled, (state, action) => {
         const index = state.items.findIndex((p) => p.id === action.payload.id);

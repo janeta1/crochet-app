@@ -13,9 +13,7 @@ function ProjectDetail({
   const progress = calculateProgress(project);
   const [showPhoto, setShowPhoto] = useState(false);
   console.log(progress);
-  const linkedYarns = (yarns || []).filter((y) =>
-    project.yarns?.includes(y.id),
-  );
+  const linkedYarns = project.yarns || [];
 
   return (
     <div className="grid lg:grid-cols-2 grid-cols-1 gap-6 mt-6">
